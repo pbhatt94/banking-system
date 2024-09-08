@@ -11,16 +11,11 @@ import java.util.logging.Logger;
 import com.wg.banking.constants.NotificationConstants;
 import com.wg.banking.constants.StringConstants;
 import com.wg.banking.controller.AccountController;
-import com.wg.banking.controller.BranchController;
-import com.wg.banking.controller.ClosedAccountsController;
 import com.wg.banking.controller.IssueController;
 import com.wg.banking.controller.NotificationController;
 import com.wg.banking.controller.TransactionController;
 import com.wg.banking.controller.UserController;
 import com.wg.banking.dao.AccountDAO;
-import com.wg.banking.dao.AccountDetailsDAO;
-import com.wg.banking.dao.BranchDAO;
-import com.wg.banking.dao.ClosedAccountsDAO;
 import com.wg.banking.dao.IssueDAO;
 import com.wg.banking.dao.NotificationDAO;
 import com.wg.banking.dao.TransactionDAO;
@@ -34,10 +29,7 @@ import com.wg.banking.helper.printer.UserPrinter;
 import com.wg.banking.model.Issue;
 import com.wg.banking.model.Notification;
 import com.wg.banking.model.User;
-import com.wg.banking.service.AccountDetailsService;
 import com.wg.banking.service.AccountService;
-import com.wg.banking.service.BranchService;
-import com.wg.banking.service.ClosedAccountsService;
 import com.wg.banking.service.IssueService;
 import com.wg.banking.service.NotificationService;
 import com.wg.banking.service.TransactionService;
@@ -48,10 +40,6 @@ public class CustomerMenu {
 	private static UserDAO userDAO = new UserDAO();
 	private static UserService userService = new UserService(userDAO);
 	private static UserController userController= new UserController(userService); 
-	
-	private static BranchDAO branchDAO = new BranchDAO(); 
-	private static BranchService branchService = new BranchService(branchDAO);
-	private static BranchController branchController= new BranchController(branchService);
 	
 	private static AccountDAO accountDAO = new AccountDAO(); 
 	private static AccountService accountService = new AccountService(accountDAO);
@@ -69,14 +57,7 @@ public class CustomerMenu {
 	private static IssueService issueService = new IssueService(issueDAO);
 	private static IssueController issueController = new IssueController(issueService);
 	
-	private static ClosedAccountsDAO closedAccountsDAO = new ClosedAccountsDAO(); 
-	private static ClosedAccountsService closedAccountsService = new ClosedAccountsService(closedAccountsDAO);
-	private static ClosedAccountsController closedAccountsController = new ClosedAccountsController(closedAccountsService);
-	
-	private static AccountDetailsDAO accountDetailsDAO = new AccountDetailsDAO();
-	private static AccountDetailsService accountDetailsService = new AccountDetailsService(accountDetailsDAO);
 	private static Logger logger = LoggingUtil.getLogger(Menu.class);
-	
 	private static Scanner scanner = new Scanner(System.in);
 	
 	public static void showCustomerMenu(User user) {

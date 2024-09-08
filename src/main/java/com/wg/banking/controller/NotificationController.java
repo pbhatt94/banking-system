@@ -8,6 +8,7 @@ import com.wg.banking.helper.UniqueIdGenerator;
 import com.wg.banking.helper.ValidateInputs;
 import com.wg.banking.helper.printer.UserPrinter;
 import com.wg.banking.model.Notification;
+import com.wg.banking.model.NotificationDetails;
 import com.wg.banking.model.User;
 import com.wg.banking.service.NotificationService;
 import com.wg.banking.service.UserService;
@@ -45,7 +46,7 @@ public class NotificationController {
         
         System.out.print(StringConstants.ENTER_TYPE_OF_NOTIFICATION);
         String notificationType = scanner.nextLine().toUpperCase();
-        
+         
         while(!ValidateInputs.isValidNotificationType(notificationType)) {
         	System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
         	notificationType = scanner.nextLine().toUpperCase();
@@ -84,13 +85,24 @@ public class NotificationController {
             } 
         } catch (Exception e) {
             System.out.println(StringConstants.ERROR_RETRIEVING_NOTIFICATIONS + e.getMessage());
-        }
+        } 
     }
 
     public List<Notification> getAllNotifications() {
     	List<Notification> notifications = new ArrayList<>();
     	try {
             notifications = notificationService.getAllNotifications();
+                       
+        } catch (Exception e) {
+            System.out.println(StringConstants.ERROR_RETRIEVING_NOTIFICATIONS + e.getMessage());
+        }
+    	return notifications;
+    }
+    
+    public List<NotificationDetails> getAllNotificationDetails() {
+    	List<NotificationDetails> notifications = new ArrayList<>();
+    	try { 
+            notifications = notificationService.getAllNotificationDetails();
                        
         } catch (Exception e) {
             System.out.println(StringConstants.ERROR_RETRIEVING_NOTIFICATIONS + e.getMessage());

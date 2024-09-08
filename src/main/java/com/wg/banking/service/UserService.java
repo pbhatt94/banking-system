@@ -39,11 +39,10 @@ public class UserService {
         return null;
     }
 
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers() { 
         try {
         	List<User> allUsers = userDAO.getAllUsers();
         	List<ClosedAccounts> inactiveUsers = closedAccountsService.getAllClosedAccounts();
-        	System.out.println(inactiveUsers);
         	Set<String> inactiveUsersSet = inactiveUsers.stream()
         												.map(closedAccount -> closedAccount.getUsername())
         												.collect(Collectors.toSet());
@@ -55,7 +54,7 @@ public class UserService {
 			logger.severe(e.getMessage());
 			e.printStackTrace();
 		}
-        return null;
+        return null; 
     }
     
 

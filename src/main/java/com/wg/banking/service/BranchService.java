@@ -33,7 +33,7 @@ public class BranchService {
     
     public boolean addBranch(Branch branch)  { 
         try {
-        	String managerId = branch.getBranchManagerId();
+        	String managerId = branch.getBranchManagerId(); 
         	User user = userService.getUserById(managerId);
         	
         	if(user == null || !user.getRole().toString().equalsIgnoreCase(UserConstants.BRANCH_MANAGER)) {

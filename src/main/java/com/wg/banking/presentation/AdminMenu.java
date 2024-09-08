@@ -38,7 +38,7 @@ import com.wg.banking.helper.UniqueIdGenerator;
 import com.wg.banking.helper.ValidateInputs;
 import com.wg.banking.helper.printer.AccountDetailsPrinter;
 import com.wg.banking.helper.printer.IssuePrinter;
-import com.wg.banking.helper.printer.NotificationPrinter;
+import com.wg.banking.helper.printer.NotificationDetailsPrinter;
 import com.wg.banking.helper.printer.TransactionPrinter;
 import com.wg.banking.helper.printer.UserPrinter;
 import com.wg.banking.model.Account;
@@ -47,6 +47,7 @@ import com.wg.banking.model.Branch;
 import com.wg.banking.model.ClosedAccounts;
 import com.wg.banking.model.Issue;
 import com.wg.banking.model.Notification;
+import com.wg.banking.model.NotificationDetails;
 import com.wg.banking.model.Transaction;
 import com.wg.banking.model.User;
 import com.wg.banking.service.AccountDetailsService;
@@ -299,10 +300,8 @@ public class AdminMenu {
 			switch(choice) {
 			case 1:
 				displayNotificationsSubMenu(user);
-				
-                notificationController.getAllNotifications();
                 break;
-            case 2:
+            case 2: 
                 notificationController.addNotification();
                 break;
             case 3:
@@ -329,20 +328,22 @@ public class AdminMenu {
 			choice = GetUserInput.getUserChoice();
 		}
 		
-		List<Notification> allNotifications = notificationController.getAllNotifications();
-		List<Notification> notifications = new ArrayList<>();
+		List<NotificationDetails> allNotifications = notificationController.getAllNotificationDetails();
+		List<NotificationDetails> notifications = new ArrayList<>();
 		switch(choice) {
 		case 1:
-			for(var notification: allNotifications) {
-				if(notification.getNotificationType().toString().equalsIgnoreCase(NotificationConstants.SYSTEM_ALERT_TYPE)) {
-					notifications.add(notification);
+			for(NotificationDetails notificationDetail: allNotifications) {
+				String notificationType = notificationDetail.getNotification().getNotificationType().toString();
+				if(notificationType.equalsIgnoreCase(NotificationConstants.SYSTEM_ALERT_TYPE)) {
+					notifications.add(notificationDetail);
 				}
 			}
 			break;
 		case 2:
-			for(var notification: allNotifications) {
-				if(notification.getNotificationType().toString().equalsIgnoreCase(NotificationConstants.ACCOUNT_ACTIVITY_TYPE)) {
-					notifications.add(notification);
+			for(NotificationDetails notificationDetail: allNotifications) {
+				String notificationType = notificationDetail.getNotification().getNotificationType().toString();
+				if(notificationType.equalsIgnoreCase(NotificationConstants.ACCOUNT_ACTIVITY_TYPE)) {
+					notifications.add(notificationDetail);
 				}
 			}
 			break;
@@ -352,7 +353,7 @@ public class AdminMenu {
 		default:
 			System.out.println(StringConstants.INVALID_SWITCH_CASE_INPUT);
 		}
-		NotificationPrinter.printNotifications(notifications);
+		NotificationDetailsPrinter.printNotifications(notifications);
 	}
 	
 	public static void displayManageIssues(User user) {		

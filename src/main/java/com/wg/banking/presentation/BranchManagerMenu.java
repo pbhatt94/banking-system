@@ -63,7 +63,7 @@ public class BranchManagerMenu {
 	private static TransactionDAO transactionDAO = new TransactionDAO(); 
 	private static TransactionService transactionService = new TransactionService(transactionDAO);
 	private static TransactionController transactionController= new TransactionController(transactionService);
-	
+	 
 	private static NotificationDAO notificationDAO = new NotificationDAO(); 
 	private static NotificationService notificationService = new NotificationService(notificationDAO);
 	private static NotificationController notificationController= new NotificationController(notificationService);
@@ -107,7 +107,6 @@ public class BranchManagerMenu {
             			switch(userChoice) {
             			case 1:
             				displayNotificationsSubMenu(user);
-                            notificationController.getAllNotifications();
                             break;
                         case 2:
                             notificationController.addNotification();
@@ -239,42 +238,6 @@ public class BranchManagerMenu {
 		}
 	}
 	
-	public static void displayNotificationsSubMenu(User user) {
-		System.out.println(StringConstants.GET_ALL_NOTIFICATIONS_SUB_MENU);
-		int choice = GetUserInput.getUserChoice();
-		
-		while(choice <= 0 || choice > 3) {
-			System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
-			System.out.println(StringConstants.GET_ALL_NOTIFICATIONS_SUB_MENU);
-			choice = GetUserInput.getUserChoice();
-		}
-		
-		List<Notification> allNotifications = notificationController.getAllNotifications();
-		List<Notification> notifications = new ArrayList<>();
-		switch(choice) {
-		case 1:
-			for(var notification: allNotifications) {
-				if(notification.getNotificationType().toString().equalsIgnoreCase(NotificationConstants.SYSTEM_ALERT_TYPE)) {
-					notifications.add(notification);
-				}
-			}
-			break;
-		case 2:
-			for(var notification: allNotifications) {
-				if(notification.getNotificationType().toString().equalsIgnoreCase(NotificationConstants.ACCOUNT_ACTIVITY_TYPE)) {
-					notifications.add(notification);
-				}
-			}
-			break;
-		case 3:
-			displayManageNotifications(user);
-			break;
-		default:
-			System.out.println(StringConstants.INVALID_SWITCH_CASE_INPUT);
-		}
-		NotificationPrinter.printNotifications(notifications);
-	}
-	
 	public static void displayManageNotifications(User user) {		
 		while(true) {
 			System.out.println(StringConstants.MANAGE_NOTIFICATION_SUB_MENU);
@@ -302,6 +265,44 @@ public class BranchManagerMenu {
 			}
 		}
 	}
+	
+	public static void displayNotificationsSubMenu(User user) {
+		System.out.println(StringConstants.GET_ALL_NOTIFICATIONS_SUB_MENU);
+		int choice = GetUserInput.getUserChoice();
+		
+		while(choice <= 0 || choice > 3) {
+			System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
+			System.out.println(StringConstants.GET_ALL_NOTIFICATIONS_SUB_MENU);
+			choice = GetUserInput.getUserChoice();
+		}
+		
+		List<NotificationDetails> allNotifications = notificationController.getAllNotificationDetails(user);
+		List<Notification> notifications = new ArrayList<>();
+		switch(choice) {
+		case 1:
+			for(var notification: allNotifications) {
+				if(notification.getNotificationType().toString().equalsIgnoreCase(NotificationConstants.SYSTEM_ALERT_TYPE)) {
+					notifications.add(notification);
+				}
+			}
+			break;
+		case 2:
+			for(var notification: allNotifications) {
+				if(notification.getNotificationType().toString().equalsIgnoreCase(NotificationConstants.ACCOUNT_ACTIVITY_TYPE)) {
+					notifications.add(notification);
+				}
+			}
+			break;
+		case 3:
+			displayManageNotifications(user);
+			break;
+		default:
+			System.out.println(StringConstants.INVALID_SWITCH_CASE_INPUT);
+		}
+		NotificationPrinter.printNotifications(notifications);
+	}
+	
+	
 	
 	public static void displayTransactionsSubMenuManager(User user) {
 		try {
