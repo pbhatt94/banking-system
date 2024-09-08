@@ -92,12 +92,15 @@ public class NotificationService {
     										.filter(user -> branchAccountIDs.contains(user.getUserId()))
     										.collect(Collectors.toList());
     		
-    		Map<String, Object> userIdToObjectMapping = new HashMap<>();
-    		userIdToObjectMapping = allUsers.stream()
+    		final Map<String, Object> userIdToObjectMapping = allUsers.stream()
     				.filter(user -> user != null && user.getUserId() != null)
     				.collect(Collectors.toMap(User::getUserId, Function.identity()));
     		
-    		for(Notification notification: sortedNotifications) {
+    		List<Notification> filteredNotifications = sortedNotifications.stream()
+    												.filter(notification -> userIdToObjectMapping.containsKey(notification.getReceiverId()))
+    												.collect(Collectors.toList());
+    		
+    		for(Notification notification: filteredNotifications) {
     			User receiver = (User) userIdToObjectMapping.get(notification.getReceiverId());
     			NotificationDetails notificationDetail = new NotificationDetails(notification, receiver);
     			notificationDetails.add(notificationDetail);

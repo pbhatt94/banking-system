@@ -110,6 +110,17 @@ public class NotificationController {
     	return notifications;
     }
     
+    public List<NotificationDetails> getAllNotificationDetails(User user) {
+    	List<NotificationDetails> notifications = new ArrayList<>();
+    	try { 
+    		notifications = notificationService.getAllNotificationDetails(user);
+    		
+    	} catch (Exception e) {
+    		System.out.println(StringConstants.ERROR_RETRIEVING_NOTIFICATIONS + e.getMessage());
+    	}
+    	return notifications;
+    }
+    
     public List<Notification> getAllNotifications(String userId) {
     	List<Notification> notifications = new ArrayList<>();
     	try {
