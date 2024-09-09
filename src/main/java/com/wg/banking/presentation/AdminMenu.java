@@ -61,112 +61,115 @@ import com.wg.banking.service.TransactionService;
 import com.wg.banking.service.UserService;
 
 public class AdminMenu {
-	
+
 	private static UserDAO userDAO = new UserDAO();
 	private static UserService userService = new UserService(userDAO);
-	private static UserController userController= new UserController(userService); 
-	
-	private static BranchDAO branchDAO = new BranchDAO(); 
+	private static UserController userController = new UserController(userService);
+
+	private static BranchDAO branchDAO = new BranchDAO();
 	private static BranchService branchService = new BranchService(branchDAO);
-	private static BranchController branchController= new BranchController(branchService);
-	
-	private static AccountDAO accountDAO = new AccountDAO(); 
+	private static BranchController branchController = new BranchController(branchService);
+
+	private static AccountDAO accountDAO = new AccountDAO();
 	private static AccountService accountService = new AccountService(accountDAO);
-	private static AccountController accountController= new AccountController(accountService);
-	
-	private static TransactionDAO transactionDAO = new TransactionDAO(); 
+	private static AccountController accountController = new AccountController(accountService);
+
+	private static TransactionDAO transactionDAO = new TransactionDAO();
 	private static TransactionService transactionService = new TransactionService(transactionDAO);
-	private static TransactionController transactionController= new TransactionController(transactionService);
-	
-	private static NotificationDAO notificationDAO = new NotificationDAO(); 
-	private static NotificationService notificationService = new NotificationService(notificationDAO);
-	private static NotificationController notificationController= new NotificationController(notificationService);
-	
-	private static IssueDAO issueDAO = new IssueDAO(); 
+	private static TransactionController transactionController = new TransactionController(transactionService);
+
+	private static IssueDAO issueDAO = new IssueDAO();
 	private static IssueService issueService = new IssueService(issueDAO);
 	private static IssueController issueController = new IssueController(issueService);
-	
-	private static ClosedAccountsDAO closedAccountsDAO = new ClosedAccountsDAO(); 
+
+	private static ClosedAccountsDAO closedAccountsDAO = new ClosedAccountsDAO();
 	private static ClosedAccountsService closedAccountsService = new ClosedAccountsService(closedAccountsDAO);
-	private static ClosedAccountsController closedAccountsController = new ClosedAccountsController(closedAccountsService);
-	
+	private static ClosedAccountsController closedAccountsController = new ClosedAccountsController(
+			closedAccountsService);
+
 	private static AccountDetailsDAO accountDetailsDAO = new AccountDetailsDAO();
 	private static AccountDetailsService accountDetailsService = new AccountDetailsService(accountDetailsDAO);
+
+	private static NotificationDAO notificationDAO = new NotificationDAO();
+	private static NotificationService notificationService = new NotificationService(notificationDAO, userService,
+			branchService, accountService);
+	private static NotificationController notificationController = new NotificationController(notificationService);
+	private static TransactionService transactionService2 = new TransactionService(transactionDAO, accountService, notificationService); 
 	private static Logger logger = LoggingUtil.getLogger(Menu.class);
-	
+
 	private static Scanner scanner = new Scanner(System.in);
-
+ 
 	public static void showAdminMenu(User user) {
-        int choice;
-        while (true) {
-            System.out.println(StringConstants.ADMIN_MENU);
+		int choice;
+		while (true) {
+			System.out.println(StringConstants.ADMIN_MENU);
 
-            
-            choice = GetUserInput.getUserChoice();
+			choice = GetUserInput.getUserChoice();
 
-            switch (choice) {
-                case 1:
-                    displayManageUsers(user);
-                    break;
-                case 2:
-                    displayManageAccounts(user);
-                    break;
-                case 3:
-                    displayManageBranches(user);
-                    break;
-                case 4:
-                    displayManageNotifications(user);
-                    break;
-                case 5:
-                    displayManageIssues(user);
-                    break;
-                case 6:
-                	displayTransactionsSubMenu(user);
-                    break;
-                case 7:
-                    StartMenu.showStartMenu();
-                    break;
-                case 8:
-                	System.exit(0);
-                default:
-                    System.out.println(StringConstants.INVALID_SWITCH_CASE_INPUT);
-            }
-        }
+			switch (choice) {
+			case 1:
+				displayManageUsers(user);
+				break;
+			case 2:
+				displayManageAccounts(user);
+				break;
+			case 3:
+				displayManageBranches(user);
+				break;
+			case 4:
+				displayManageNotifications(user);
+				break;
+			case 5:
+				displayManageIssues(user);
+				break;
+			case 6:
+				displayTransactionsSubMenu(user);
+				break;
+			case 7:
+				StartMenu.showStartMenu();
+				break;
+			case 8:
+				System.exit(0);
+			default:
+				System.out.println(StringConstants.INVALID_SWITCH_CASE_INPUT);
+			}
+		}
 	}
-	
-	
-	public static void displayManageUsers(User user) {		
-		while(true) {
+
+	public static void displayManageUsers(User user) {
+		while (true) {
 			System.out.println(StringConstants.MANAGE_USER_SUB_MENU);
 			int choice = GetUserInput.getUserChoice();
-			
-			switch(choice) {
+
+			switch (choice) {
 			case 1:
 				List<User> users = userController.getAllUsers();
-            	UserPrinter.printUsers(users);
-                break;
+				UserPrinter.printUsers(users);
+				break;
 			case 2:
 				User newUser = null;
-            	do {
-            		newUser = getInputForNewUser();
-            		if(newUser != null) break;
-            		System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
-            	} while(newUser == null);
-                userController.addUser(newUser);
-                if(!newUser.getRole().toString().equalsIgnoreCase(UserConstants.CUSTOMER)) break;
-                
-                Account account = getInputForAccount(newUser);
-                if(account == null) {
+				do {
+					newUser = getInputForNewUser();
+					if (newUser != null)
+						break;
+					System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
+				} while (newUser == null);
+				userController.addUser(newUser);
+				if (!newUser.getRole().toString().equalsIgnoreCase(UserConstants.CUSTOMER))
+					break;
+
+				Account account = getInputForAccount(newUser);
+				if (account == null) {
 					System.out.println(StringConstants.FAILED_CUSTOMER_ACCOUNT_CREATION);
-                	break;
-                }
-                
-                accountController.addAccount(account);
+					break;
+				}
+
+				accountController.addAccount(account);
 				System.out.println(StringConstants.SUCCESSFUL_CUSTOMER_ACCOUNT_CREATION);
-                break;
+				break;
 			case 3:
-				updateUser(); 
-                break;
+				updateUser();
+				break;
 			case 4:
 				List<User> inactiveUsers = userController.getAllInactiveUsers();
 				UserPrinter.printUsers(inactiveUsers);
@@ -184,28 +187,28 @@ public class AdminMenu {
 			}
 		}
 	}
-	
-	public static void displayManageAccounts(User user) {		
-		while(true) {
+
+	public static void displayManageAccounts(User user) {
+		while (true) {
 			System.out.println(StringConstants.MANAGE_ACCOUNT_SUB_MENU);
 			int choice = GetUserInput.getUserChoice();
-			
-			switch(choice) {
+
+			switch (choice) {
 			case 1:
 				displayAccountDetails(user);
-            	break;
-            case 2:
-            	accountController.updateAccount();
-            	break;
-            case 3:
-            	closeAccount();
-                break;
-            case 4:
-                showAdminMenu(user);
-                break;
+				break;
+			case 2:
+				accountController.updateAccount();
+				break;
+			case 3:
+				closeAccount();
+				break;
+			case 4:
+				showAdminMenu(user);
+				break;
 			case 5:
 				StartMenu.showStartMenu();
-                break;
+				break;
 			case 6:
 				System.exit(0);
 			default:
@@ -213,73 +216,72 @@ public class AdminMenu {
 			}
 		}
 	}
-	
-	public static void displayManageBranches(User user) {	
-		while(true) {
+
+	public static void displayManageBranches(User user) {
+		while (true) {
 			System.out.println(StringConstants.MANAGE_BRANCH_SUB_MENU);
 			int choice = GetUserInput.getUserChoice();
-			
-			
-			switch(choice) {
+
+			switch (choice) {
 			case 1:
 				System.out.println(StringConstants.AVAILABLE_BRANCHES_MESSAGE);
 				List<Branch> branches = branchController.getAllBranches();
 				BranchPrinter.printBranches(branches);
-            	break;
+				break;
 			case 2:
-                String branchId = UniqueIdGenerator.generateUniqueId();
-                
-                System.out.print(StringConstants.ENTER_BRANCH_NAME_MESSAGE);
-                String branchName = scanner.nextLine();
-                while(!ValidateInputs.isValidString(branchName)) {
-                	System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
-                    System.out.print(StringConstants.ENTER_BRANCH_NAME_MESSAGE);
-                    branchName = scanner.nextLine();
-                }
-                
-                System.out.print(StringConstants.ENTER_BRANCH_ADDRESS_MESSAGE);
-                String branchAddress = scanner.nextLine();
-                while(!ValidateInputs.isValidString(branchAddress)) {
-                	System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
-                    System.out.print(StringConstants.ENTER_BRANCH_ADDRESS_MESSAGE);
-                    branchAddress = scanner.nextLine();
-                }
-                
-                List<User> managers = userController.getAvailableManagers();
-                if(managers.size() == 0) {
+				String branchId = UniqueIdGenerator.generateUniqueId();
+
+				System.out.print(StringConstants.ENTER_BRANCH_NAME_MESSAGE);
+				String branchName = scanner.nextLine();
+				while (!ValidateInputs.isValidString(branchName)) {
+					System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
+					System.out.print(StringConstants.ENTER_BRANCH_NAME_MESSAGE);
+					branchName = scanner.nextLine();
+				}
+
+				System.out.print(StringConstants.ENTER_BRANCH_ADDRESS_MESSAGE);
+				String branchAddress = scanner.nextLine();
+				while (!ValidateInputs.isValidString(branchAddress)) {
+					System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
+					System.out.print(StringConstants.ENTER_BRANCH_ADDRESS_MESSAGE);
+					branchAddress = scanner.nextLine();
+				}
+
+				List<User> managers = userController.getAvailableManagers();
+				if (managers.size() == 0) {
 					System.out.println(StringConstants.NO_AVAILABLE_MANAGERS_MESSAGE);
-                	return;
-                }
-                
-                UserPrinter.printUsers(managers);
-                System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
-                int index = GetUserInput.getUserChoice();
-                
-                while(index <= 0 || index > managers.size()) {
+					return;
+				}
+
+				UserPrinter.printUsers(managers);
+				System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
+				int index = GetUserInput.getUserChoice();
+
+				while (index <= 0 || index > managers.size()) {
 					System.out.println(StringConstants.INVALID_INDEX_MESSAGE);
-                	System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
-                	index = GetUserInput.getUserChoice();
-                }
-                
-                String branchManagerId = managers.get(index-1).getUserId();
-                
-                Date now = new Date(System.currentTimeMillis());
-                
-                Branch branch = new Branch(branchId, branchName, branchAddress, branchManagerId, now, now);
-                branchController.addBranch(branch);
-                break;
+					System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
+					index = GetUserInput.getUserChoice();
+				}
+
+				String branchManagerId = managers.get(index - 1).getUserId();
+
+				Date now = new Date(System.currentTimeMillis());
+
+				Branch branch = new Branch(branchId, branchName, branchAddress, branchManagerId, now, now);
+				branchController.addBranch(branch);
+				break;
 			case 3:
-            	branchController.updateBranch();
-            	break;
-            case 4:
-                branchController.deleteBranch();
-                break;
-            case 5:
-                showAdminMenu(user);
-                break;
+				branchController.updateBranch();
+				break;
+			case 4:
+				branchController.deleteBranch();
+				break;
+			case 5:
+				showAdminMenu(user);
+				break;
 			case 6:
 				StartMenu.showStartMenu();
-                break;
+				break;
 			case 7:
 				System.exit(0);
 			default:
@@ -287,25 +289,25 @@ public class AdminMenu {
 			}
 		}
 	}
-	
-	public static void displayManageNotifications(User user) {		
-		while(true) {
+
+	public static void displayManageNotifications(User user) {
+		while (true) {
 			System.out.println(StringConstants.MANAGE_NOTIFICATION_SUB_MENU);
 			int choice = GetUserInput.getUserChoice();
-			
-			switch(choice) {
+
+			switch (choice) {
 			case 1:
 				displayNotificationsSubMenu(user);
-                break;
-            case 2: 
-                notificationController.addNotification();
-                break;
-            case 3:
-                showAdminMenu(user);
-                break;
+				break;
+			case 2:
+				notificationController.addNotification();
+				break;
+			case 3:
+				showAdminMenu(user);
+				break;
 			case 4:
 				StartMenu.showStartMenu();
-                break;
+				break;
 			case 5:
 				System.exit(0);
 			default:
@@ -313,32 +315,32 @@ public class AdminMenu {
 			}
 		}
 	}
-	
+
 	public static void displayNotificationsSubMenu(User user) {
 		System.out.println(StringConstants.GET_ALL_NOTIFICATIONS_SUB_MENU);
 		int choice = GetUserInput.getUserChoice();
-		
-		while(choice <= 0 || choice > 3) {
+
+		while (choice <= 0 || choice > 3) {
 			System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
 			System.out.println(StringConstants.GET_ALL_NOTIFICATIONS_SUB_MENU);
 			choice = GetUserInput.getUserChoice();
 		}
-		
+
 		List<NotificationDetails> allNotifications = notificationController.getAllNotificationDetails();
 		List<NotificationDetails> notifications = new ArrayList<>();
-		switch(choice) {
+		switch (choice) {
 		case 1:
-			for(NotificationDetails notificationDetail: allNotifications) {
+			for (NotificationDetails notificationDetail : allNotifications) {
 				String notificationType = notificationDetail.getNotification().getNotificationType().toString();
-				if(notificationType.equalsIgnoreCase(NotificationConstants.SYSTEM_ALERT_TYPE)) {
+				if (notificationType.equalsIgnoreCase(NotificationConstants.SYSTEM_ALERT_TYPE)) {
 					notifications.add(notificationDetail);
 				}
 			}
 			break;
 		case 2:
-			for(NotificationDetails notificationDetail: allNotifications) {
+			for (NotificationDetails notificationDetail : allNotifications) {
 				String notificationType = notificationDetail.getNotification().getNotificationType().toString();
-				if(notificationType.equalsIgnoreCase(NotificationConstants.ACCOUNT_ACTIVITY_TYPE)) {
+				if (notificationType.equalsIgnoreCase(NotificationConstants.ACCOUNT_ACTIVITY_TYPE)) {
 					notifications.add(notificationDetail);
 				}
 			}
@@ -351,43 +353,44 @@ public class AdminMenu {
 		}
 		NotificationDetailsPrinter.printNotifications(notifications);
 	}
-	
-	public static void displayManageIssues(User user) {		
-		while(true) {
+
+	public static void displayManageIssues(User user) {
+		while (true) {
 			System.out.println(StringConstants.MANAGE_ISSUE_SUB_MENU);
 			int choice = GetUserInput.getUserChoice();
-			
-			switch(choice) {
+
+			switch (choice) {
 			case 1:
-            	List<Issue> issues = issueController.getAllIssues();
-            	IssuePrinter.printIssues(issues);
-            	break;
-            case 2:
-            	List<Issue> allPendingIssues = issueController.getAllIssues().stream().filter(issue -> issue.getStatus() == Issue.Status.PENDING).collect(Collectors.toList());
-            	if(allPendingIssues == null || allPendingIssues.size() == 0) {
+				List<Issue> issues = issueController.getAllIssues();
+				IssuePrinter.printIssues(issues);
+				break;
+			case 2:
+				List<Issue> allPendingIssues = issueController.getAllIssues().stream()
+						.filter(issue -> issue.getStatus() == Issue.Status.PENDING).collect(Collectors.toList());
+				if (allPendingIssues == null || allPendingIssues.size() == 0) {
 					System.out.println(StringConstants.NO_ISSUES_PRESENT_MESSAGE);
-            		break;
-            	} 
-            	IssuePrinter.printIssues(allPendingIssues);
-            	System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
-            	int index = GetUserInput.getUserChoice();
-            	            	
-            	while(index <= 0 || index > allPendingIssues.size()) {
-            		System.out.println(StringConstants.INVALID_INDEX_MESSAGE);
-            		System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
-                	index = GetUserInput.getUserChoice();
-            	}
-            	
-            	Issue issueToResolve = allPendingIssues.get(index-1);
-            	issueController.resolveIssue(issueToResolve);
-            	
-            	break;
-            case 3:
-                showAdminMenu(user);
-                break;
+					break;
+				}
+				IssuePrinter.printIssues(allPendingIssues);
+				System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
+				int index = GetUserInput.getUserChoice();
+
+				while (index <= 0 || index > allPendingIssues.size()) {
+					System.out.println(StringConstants.INVALID_INDEX_MESSAGE);
+					System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
+					index = GetUserInput.getUserChoice();
+				}
+
+				Issue issueToResolve = allPendingIssues.get(index - 1);
+				issueController.resolveIssue(issueToResolve);
+
+				break;
+			case 3:
+				showAdminMenu(user);
+				break;
 			case 4:
 				StartMenu.showStartMenu();
-                break;
+				break;
 			case 5:
 				System.exit(0);
 			default:
@@ -395,14 +398,14 @@ public class AdminMenu {
 			}
 		}
 	}
-	
+
 	public static void displayTransactionsSubMenu(User user) {
 		try {
-			while(true) {
+			while (true) {
 				System.out.println(StringConstants.MANAGE_TRANSACTION_SUB_MENU);
 				int choice = GetUserInput.getUserChoice();
-				
-				switch(choice) {
+
+				switch (choice) {
 				case 1:
 					TransactionPrinter.printTransactions(transactionController.getAllTransactions());
 					break;
@@ -421,51 +424,51 @@ public class AdminMenu {
 				case 6:
 					System.exit(0);
 				default:
-                    System.out.println(StringConstants.INVALID_SWITCH_CASE_INPUT);
+					System.out.println(StringConstants.INVALID_SWITCH_CASE_INPUT);
 				}
 			}
 		} catch (InputMismatchException e) {
 			logger.log(Level.SEVERE, "An error occurred: ", e);
 			e.printStackTrace();
 			scanner.next();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			logger.log(Level.SEVERE, "An error occurred: ", e);
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void displayAccountDetails(User user) {
 		try {
 			System.out.println(StringConstants.GET_ACCOUNT_DETAILS_SUB_MENU);
 			int choice = GetUserInput.getUserChoice();
-			
+
 			List<AccountDetails> accounts = new ArrayList<>();
-			switch(choice) {
+			switch (choice) {
 			case 1:
 				System.out.println(StringConstants.AVAILABLE_BRANCHES_MESSAGE);
 				List<Branch> branches = branchController.getAllBranches();
 				int index = 1;
-				for(Branch branch: branches) {
+				for (Branch branch : branches) {
 					System.out.println(index + "     " + branch.getBranchName());
 					index++;
 				}
 				System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
 				index = GetUserInput.getUserChoice();
-				
-				while(index <= 0 || index > branches.size()) {
+
+				while (index <= 0 || index > branches.size()) {
 					System.out.println(StringConstants.INVALID_INDEX_MESSAGE);
 					System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
 					index = GetUserInput.getUserChoice();
 				}
-				
-				String selectedBranch = branches.get(index-1).getBranchName();
+
+				String selectedBranch = branches.get(index - 1).getBranchName();
 				accounts = accountDetailsService.getAllAccountDetails(selectedBranch);
 				break;
 			case 2:
 				accounts = accountDetailsService.getAllAccountDetails();
 				System.out.println(StringConstants.GET_ACCOUNT_DETAILS_FILTER_BY_BALANCE_SUB_MENU);
 				int filterChoice = GetUserInput.getUserChoice();
-				switch(filterChoice) {
+				switch (filterChoice) {
 				case 1:
 					System.out.println(StringConstants.ENTER_THE_MINIMUM_BALANCE);
 					double minimumBalance = GetUserInput.getDoubleInput();
@@ -481,13 +484,14 @@ public class AdminMenu {
 					double minBalance = GetUserInput.getDoubleInput();
 					System.out.println(StringConstants.ENTER_THE_MAXIMUM_BALANCE);
 					double maxBalance = GetUserInput.getDoubleInput();
-					accounts = accountDetailsService.getAllAccountDetailsByBalanceWithinRange(accounts, minBalance, maxBalance);
+					accounts = accountDetailsService.getAllAccountDetailsByBalanceWithinRange(accounts, minBalance,
+							maxBalance);
 					break;
 				case 4:
 					displayAccountDetails(user);
 				case 5:
 					StartMenu.showStartMenu();
-				case 6: 
+				case 6:
 					System.exit(0);
 				default:
 					System.out.println(StringConstants.INVALID_SWITCH_CASE_INPUT);
@@ -505,93 +509,92 @@ public class AdminMenu {
 			default:
 				System.out.println(StringConstants.INVALID_SWITCH_CASE_INPUT);
 			}
-			
+
 			AccountDetailsPrinter.printAccountDetails(accounts);
 		} catch (InputMismatchException e) {
 			logger.log(Level.SEVERE, "An error occurred: ", e);
 			e.printStackTrace();
 			scanner.next();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			logger.log(Level.SEVERE, "An error occurred: ", e);
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static User getInputForNewUser() {
 		try {
 			String userId = UniqueIdGenerator.generateUniqueId();
-			
+
 			System.out.print(StringConstants.ENTER_NAME);
 			String name = scanner.nextLine();
-			while(!ValidateInputs.isValidName(name)) {
+			while (!ValidateInputs.isValidName(name)) {
 				System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
 				System.out.print(StringConstants.ENTER_NAME);
 				name = scanner.next();
 			}
-			
+
 			System.out.print(StringConstants.ENTER_EMAIL);
 			String email = scanner.nextLine();
-			while(!ValidateInputs.isValidEmail(email)) {
+			while (!ValidateInputs.isValidEmail(email)) {
 				System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
 				System.out.print(StringConstants.ENTER_EMAIL);
 				email = scanner.next();
 			}
-			
+
 			System.out.print(StringConstants.ENTER_USERNAME);
 			String username = scanner.nextLine();
-			while(!ValidateInputs.isValidUsername(username)) {
+			while (!ValidateInputs.isValidUsername(username)) {
 				System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
 				System.out.print(StringConstants.ENTER_USERNAME);
 				username = scanner.nextLine();
 			}
-			
+
 			System.out.print(StringConstants.ENTER_PASSWORD);
 			String password = scanner.nextLine();
-			while(!PasswordUtil.isPasswordStrong(password)) {
+			while (!PasswordUtil.isPasswordStrong(password)) {
 				System.out.println(StringConstants.PASSWORD_NOT_STRONG_ENOUGH);
 				System.out.print(StringConstants.ENTER_PASSWORD);
 				password = scanner.next();
 			}
 			password = PasswordUtil.hashPassword(password);
-			
+
 			System.out.print(StringConstants.ENTER_AGE);
 			int age = GetUserInput.getUserChoice();
-			while(!ValidateInputs.isValidAge(age)) {
+			while (!ValidateInputs.isValidAge(age)) {
 				System.out.println(StringConstants.ENTER_A_VALID_AGE);
 				System.out.print(StringConstants.ENTER_AGE);
 				age = GetUserInput.getUserChoice();
 			}
-			
-			 
+
 			System.out.print(StringConstants.ENTER_GENDER);
 			String genderString = scanner.nextLine().toUpperCase();
-			while(!ValidateInputs.isValidGender(genderString)) {
+			while (!ValidateInputs.isValidGender(genderString)) {
 				System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
 				System.out.print(StringConstants.ENTER_GENDER);
 				genderString = scanner.next();
-			} 
-			
+			}
+
 			User.Gender gender = User.Gender.valueOf(genderString.toUpperCase());
 
 			System.out.print(StringConstants.ENTER_PHONE_NUMBER);
 			String phoneNo = scanner.nextLine();
-			while(!ValidateInputs.isValidPhoneNo(phoneNo)) {
+			while (!ValidateInputs.isValidPhoneNo(phoneNo)) {
 				System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
 				System.out.print(StringConstants.ENTER_PHONE_NUMBER);
 				phoneNo = scanner.next();
 			}
-			
+
 			System.out.print(StringConstants.ENTER_ADDRESS);
 			String address = scanner.nextLine();
-			while(!ValidateInputs.isValidString(address)) {
+			while (!ValidateInputs.isValidString(address)) {
 				System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
 				System.out.print(StringConstants.ENTER_ADDRESS);
 				address = scanner.nextLine();
 			}
-			
+
 			System.out.print(StringConstants.ENTER_ROLE);
 			String roleString = scanner.nextLine().toUpperCase();
-			while(!ValidateInputs.isValidRole(roleString)) {
+			while (!ValidateInputs.isValidRole(roleString)) {
 				System.out.println(StringConstants.INVALID_INPUT_MESSAGE);
 				System.out.print(StringConstants.ENTER_ROLE);
 				roleString = scanner.next();
@@ -600,81 +603,82 @@ public class AdminMenu {
 			User.Role role = User.Role.valueOf(roleString);
 			Date now = new Date();
 
-			User newUser = new User(userId, name, email, username, password, age, gender, phoneNo, address, role, now, now);
-			
+			User newUser = new User(userId, name, email, username, password, age, gender, phoneNo, address, role, now,
+					now);
+
 			boolean isValidUser = ValidateInputs.validateUser(newUser);
-			
-			if(!isValidUser) {
+
+			if (!isValidUser) {
 				return null;
 			}
-			
+
 			return newUser;
 		} catch (InputMismatchException e) {
 			logger.log(Level.SEVERE, "An error occurred: ", e);
 			e.printStackTrace();
 			scanner.next();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			logger.log(Level.SEVERE, "An error occurred: ", e);
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
 	private static Account getInputForAccount(User user) {
 		String accountNo = AccountNumberGenerator.generateAccountNumber();
-		
+
 		String ownerId = user.getUserId();
-		
+
 		System.out.println(StringConstants.AVAILABLE_BRANCHES_MESSAGE);
 		List<Branch> branches = branchController.getAllBranches();
 		int index = 1;
-		for(Branch branch: branches) {
+		for (Branch branch : branches) {
 			System.out.println(index + "     " + branch.getBranchName());
 			index++;
 		}
 		System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
 		index = GetUserInput.getUserChoice();
-		
-		while(index <= 0 || index > branches.size()) {
+
+		while (index <= 0 || index > branches.size()) {
 			System.out.println(StringConstants.INVALID_INDEX_MESSAGE);
 			System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
 			index = GetUserInput.getUserChoice();
 		}
-		
-		String branchId = branches.get(index-1).getBranchId();
-		
+
+		String branchId = branches.get(index - 1).getBranchId();
+
 		Date now = new Date(System.currentTimeMillis());
-		
+
 		Account account = new Account(accountNo, AccountConstants.DEFAULT_ACCOUNT_BALANCE, ownerId, branchId, now, now);
 		return account;
 	}
-	
-	
+
 	public static void filterTransactionByType(List<Transaction> transactions, User user) {
 		try {
-			while(true) {
+			while (true) {
 				System.out.println(StringConstants.MANAGE_TRANSACTION_FILTER_BY_TYPE_SUB_MENU);
 				int choice = GetUserInput.getUserChoice();
-				
-				switch(choice) {
+
+				switch (choice) {
 				case 1:
 					List<Transaction> withdrawals = transactions.stream()
-													.filter(transaction -> transaction.getTransactionType().toString().equalsIgnoreCase(TransactionConstants.WITHDRAWAL_TYPE))
-													.collect(Collectors.toList());
+							.filter(transaction -> transaction.getTransactionType().toString()
+									.equalsIgnoreCase(TransactionConstants.WITHDRAWAL_TYPE))
+							.collect(Collectors.toList());
 					TransactionPrinter.printTransactions(withdrawals);
 					break;
 				case 2:
-					List<Transaction> deposits = transactions.stream()
-					.filter(transaction -> transaction.getTransactionType().toString().equalsIgnoreCase(TransactionConstants.DEPOSIT_TYPE))
-					.collect(Collectors.toList());
-					
+					List<Transaction> deposits = transactions.stream().filter(transaction -> transaction
+							.getTransactionType().toString().equalsIgnoreCase(TransactionConstants.DEPOSIT_TYPE))
+							.collect(Collectors.toList());
+
 					TransactionPrinter.printTransactions(deposits);
 					break;
 				case 3:
-					List<Transaction> transfers = transactions.stream()
-					.filter(transaction -> transaction.getTransactionType().toString().equalsIgnoreCase(TransactionConstants.TRANSFER_TYPE))
-					.collect(Collectors.toList());
-					
+					List<Transaction> transfers = transactions.stream().filter(transaction -> transaction
+							.getTransactionType().toString().equalsIgnoreCase(TransactionConstants.TRANSFER_TYPE))
+							.collect(Collectors.toList());
+
 					TransactionPrinter.printTransactions(transfers);
 					break;
 				case 4:
@@ -682,9 +686,9 @@ public class AdminMenu {
 				case 5:
 					StartMenu.showStartMenu();
 				case 6:
-					System.exit(0);	
+					System.exit(0);
 				default:
-                    System.out.println(StringConstants.INVALID_SWITCH_CASE_INPUT);
+					System.out.println(StringConstants.INVALID_SWITCH_CASE_INPUT);
 				}
 			}
 		} catch (InputMismatchException e) {
@@ -693,65 +697,63 @@ public class AdminMenu {
 			scanner.next();
 		}
 	}
-	
+
 	public static void filterTransactionByAmount(List<Transaction> transactions, User user) {
 		System.out.println(StringConstants.MANAGE_TRANSACTION_FILTER_BY_AMOUNT_SUB_MENU);
 		int choice = GetUserInput.getUserChoice();
 		List<Transaction> requiredTransactions = new ArrayList<>();
-		switch(choice) {
+		switch (choice) {
 		case 1:
 			System.out.println(StringConstants.ENTER_MINIMUM_AMOUNT_TO_FILTER_BY);
 			double minAmount = GetUserInput.getDoubleInput();
-			requiredTransactions = transactions.stream()
-											.filter(transaction -> transaction.getAmount() >= minAmount)
-											.collect(Collectors.toList());
+			requiredTransactions = transactions.stream().filter(transaction -> transaction.getAmount() >= minAmount)
+					.collect(Collectors.toList());
 			break;
 		case 2:
 			System.out.println(StringConstants.ENTER_MAXIMUM_AMOUNT_TO_FILTER_BY);
 			double maxAmount = GetUserInput.getDoubleInput();
-			requiredTransactions = transactions.stream()
-											.filter(transaction -> transaction.getAmount() <= maxAmount)
-											.collect(Collectors.toList());
+			requiredTransactions = transactions.stream().filter(transaction -> transaction.getAmount() <= maxAmount)
+					.collect(Collectors.toList());
 			break;
 		case 3:
 			System.out.println(StringConstants.ENTER_MINIMUM_AMOUNT_TO_FILTER_BY);
 			double miniAmount = GetUserInput.getDoubleInput();
-			
+
 			System.out.println(StringConstants.ENTER_MAXIMUM_AMOUNT_TO_FILTER_BY);
 			double maxiAmount = GetUserInput.getDoubleInput();
 
-			requiredTransactions = transactions.stream()
-											.filter(transaction -> transaction.getAmount() >= miniAmount && transaction.getAmount() <= maxiAmount)
-											.collect(Collectors.toList());
+			requiredTransactions = transactions.stream().filter(
+					transaction -> transaction.getAmount() >= miniAmount && transaction.getAmount() <= maxiAmount)
+					.collect(Collectors.toList());
 			break;
 		case 4:
 			displayTransactionsSubMenu(user);
 		case 5:
 			StartMenu.showStartMenu();
 		case 6:
-			System.exit(0);	
+			System.exit(0);
 		default:
-            System.out.println(StringConstants.INVALID_SWITCH_CASE_INPUT);
+			System.out.println(StringConstants.INVALID_SWITCH_CASE_INPUT);
 		}
 		TransactionPrinter.printTransactions(requiredTransactions);
 	}
-	
+
 	private static void closeAccount() {
 		List<AccountDetails> accounts = accountDetailsService.getAllAccountDetails();
 		AccountDetailsPrinter.printAccountDetails(accounts);
 		System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
 		int index = GetUserInput.getUserChoice();
-		
-		while(index <= 0 || index > accounts.size()) {
+
+		while (index <= 0 || index > accounts.size()) {
 			System.out.println(StringConstants.INVALID_INDEX_MESSAGE);
 			System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
 			index = GetUserInput.getUserChoice();
 		}
-		
-		String accountNo = accounts.get(index-1).getAccountNo();
+
+		String accountNo = accounts.get(index - 1).getAccountNo();
 		String userId = accountController.getUser(accountNo).getOwnerId();
 		User user = userController.getUserById(userId);
-		
+
 		String closedAccountId = UniqueIdGenerator.generateUniqueId();
 		String username = user.getUsername();
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -762,23 +764,23 @@ public class AdminMenu {
 		boolean flag = closedAccountsController.addClosedAccounts(closedAccount);
 		if (flag == true) {
 			System.out.println(StringConstants.ACCOUNT_CLOSED_SUCCESSFULLY);
-		} 
-	}	
-	
+		}
+	}
+
 	private static void updateUser() {
 		List<User> users = userController.getAllUsers();
-		UserPrinter.printUsers(users);		
-		
+		UserPrinter.printUsers(users);
+
 		System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
 		int index = GetUserInput.getUserChoice();
-		
-		while(index <= 0 || index > users.size()) {
+
+		while (index <= 0 || index > users.size()) {
 			System.out.println(StringConstants.INVALID_INDEX_MESSAGE);
 			System.out.println(StringConstants.ENTER_INDEX_MESSAGE);
 			index = GetUserInput.getUserChoice();
 		}
-		
-		boolean flag = userController.updateUser(users.get(index-1).getUserId());
+
+		boolean flag = userController.updateUser(users.get(index - 1).getUserId());
 		if (flag == true) {
 			System.out.println(StringConstants.USER_UPDATION_SUCCESS);
 		} else {

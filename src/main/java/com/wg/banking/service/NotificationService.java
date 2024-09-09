@@ -23,12 +23,9 @@ import com.wg.banking.model.User;
 
 public class NotificationService {
     private NotificationDAO notificationDAO;
-    private UserDAO userDAO = new UserDAO();
-    private UserService userService = new UserService(userDAO);
-    private BranchDAO branchDAO = new BranchDAO();
-    private BranchService branchService = new BranchService(branchDAO);
-    private AccountDAO accountDAO = new AccountDAO();
-    private AccountService accountService = new AccountService(accountDAO);
+    private UserService userService;
+    private BranchService branchService;
+    private AccountService accountService;
     
     private static Logger logger = LoggingUtil.getLogger(NotificationService.class);
 
@@ -42,11 +39,18 @@ public class NotificationService {
 //        branchService = new BranchService(branchDAO);
     }
     
+    public NotificationService(NotificationDAO notificationDAO, UserService userService, BranchService branchService, AccountService accountService) {
+    	this.notificationDAO = notificationDAO;
+          this.userService = userService;
+          this.accountService = accountService;
+          this.branchService = branchService;
+    }
+    
+    
     public List<NotificationDetails> getAllNotificationDetails() {
     	List<NotificationDetails> notificationDetails = new ArrayList<>();
     	try {
     		List<Notification> notifications =  notificationDAO.getAllNotifications();
-    		System.out.println(notifications);
     		
     		List<Notification> sortedNotifications = notifications.stream()
     				.sorted((n1, n2) -> n2.getCreatedAt().compareTo(n1.getCreatedAt()))
@@ -54,12 +58,10 @@ public class NotificationService {
     		
     		
     		List<User> allUsers = userService.getAllUsers();
-    		System.out.println(allUsers);
     		Map<String, Object> userIdToObjectMapping = new HashMap<>();
     		userIdToObjectMapping = allUsers.stream()
 								            .filter(user -> user != null && user.getUserId() != null)
 								            .collect(Collectors.toMap(User::getUserId, Function.identity()));
-    		System.out.println(userIdToObjectMapping);
     		for(Notification notification: sortedNotifications) {
     			User receiver = (User) userIdToObjectMapping.get(notification.getReceiverId());
     			NotificationDetails notificationDetail = new NotificationDetails(notification, receiver);
