@@ -69,7 +69,7 @@ public class TransactionService {
 			accountService.updateAccount(sourceAccount);
 			System.out.println(StringConstants.ACCOUNT_BALANCE_UPDATED);
 			
-			transactionDAO.addTransaction(transaction);
+			transactionDAO.addTransaction(transaction); 
 			
 			//notify
 			Notification notification = generateTransactionNotification(transaction, newBalance);

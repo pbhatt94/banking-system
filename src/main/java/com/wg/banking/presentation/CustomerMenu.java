@@ -55,7 +55,7 @@ public class CustomerMenu {
 	
 	private static IssueDAO issueDAO = new IssueDAO(); 
 	private static IssueService issueService = new IssueService(issueDAO);
-	private static IssueController issueController = new IssueController(issueService);
+	private static IssueController issueController = new IssueController(issueService); 
 	
 	private static Logger logger = LoggingUtil.getLogger(Menu.class);
 	private static Scanner scanner = new Scanner(System.in);

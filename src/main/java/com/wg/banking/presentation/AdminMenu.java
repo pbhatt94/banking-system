@@ -37,6 +37,7 @@ import com.wg.banking.helper.PasswordUtil;
 import com.wg.banking.helper.UniqueIdGenerator;
 import com.wg.banking.helper.ValidateInputs;
 import com.wg.banking.helper.printer.AccountDetailsPrinter;
+import com.wg.banking.helper.printer.BranchPrinter;
 import com.wg.banking.helper.printer.IssuePrinter;
 import com.wg.banking.helper.printer.NotificationDetailsPrinter;
 import com.wg.banking.helper.printer.TransactionPrinter;
@@ -223,12 +224,7 @@ public class AdminMenu {
 			case 1:
 				System.out.println(StringConstants.AVAILABLE_BRANCHES_MESSAGE);
 				List<Branch> branches = branchController.getAllBranches();
-				int branchIndex = 1;
-				for(Branch branch: branches) {
-					System.out.println(branchIndex + "     " + branch.getBranchName());
-					branchIndex++;
-				}
-            	//TODO: display better
+				BranchPrinter.printBranches(branches);
             	break;
 			case 2:
                 String branchId = UniqueIdGenerator.generateUniqueId();

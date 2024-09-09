@@ -16,7 +16,7 @@ public class Transaction {
         TRANSFER
     }
 
-    public Transaction() {}
+    public Transaction() { }
 
     public Transaction(String transactionId, double amount,
                        TransactionType transactionType, String sourceAccountId, 
@@ -27,7 +27,7 @@ public class Transaction {
         this.sourceAccountId = sourceAccountId;
         this.destinationAccountId = destinationAccountId;
         this.createdAt = createdAt;
-    }
+    } 
 
     public String getTransactionId() {
         return transactionId;

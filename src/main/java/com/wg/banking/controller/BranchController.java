@@ -5,6 +5,7 @@ import com.wg.banking.constants.StringConstants;
 import com.wg.banking.dao.UserDAO;
 import com.wg.banking.helper.GetUserInput;
 import com.wg.banking.helper.Printer;
+import com.wg.banking.helper.printer.BranchPrinter;
 import com.wg.banking.helper.printer.UserPrinter;
 import com.wg.banking.model.Branch;
 import com.wg.banking.model.User;
@@ -64,8 +65,8 @@ public class BranchController {
     public void updateBranch() {
     	try {
     		int branchIndex;
-    		printAllBranches();
 			List<Branch> branches = getAllBranches();
+			BranchPrinter.printBranches(branches);
     		
             System.out.print(StringConstants.ENTER_INDEX_MESSAGE);
             branchIndex = GetUserInput.getUserChoice();
@@ -75,7 +76,7 @@ public class BranchController {
             	System.out.print(StringConstants.ENTER_INDEX_MESSAGE);
                 branchIndex = GetUserInput.getUserChoice();
             }
-            
+             
             String branchId = branches.get(branchIndex-1).getBranchId();
 
             Branch branch = branchService.getBranchById(branchId);
@@ -151,8 +152,8 @@ public class BranchController {
     public void deleteBranch() {
     	try {
     		int branchIndex;
-    		printAllBranches();
 			List<Branch> branches = getAllBranches();
+			BranchPrinter.printBranches(branches);
 			if(branches.size() == 0) {
 				System.out.println(StringConstants.THERE_ARE_NO_BRANCHES);
 				return;
@@ -178,16 +179,6 @@ public class BranchController {
         } catch (Exception e) {
             System.out.println(StringConstants.ERROR_DELETING_BRANCH + e.getMessage());
         }
-    }
-    
-    private void printAllBranches() {
-    	List<Branch> branches = getAllBranches();
-    	System.out.println(StringConstants.AVAILABLE_BRANCHES_MESSAGE);
-    	int branchIndex = 1;
-    	for(Branch branch: branches) {
-    		System.out.println(branchIndex + "   " + branch.getBranchName());
-    		branchIndex++;
-    	}
     }
     
     public Branch getBranch(User user) {

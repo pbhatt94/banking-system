@@ -13,12 +13,12 @@ public class BranchPrinter {
     private static final String BOX_BORDER = "==================================================================================================================================================";
     private static final String DIVIDER_LINE = "------------------------------------------------------------------------------------------------------------------------------------------------";
  
-    public static void printIssues(List<Branch> branches) {
+    public static void printBranches(List<Branch> branches) {
     	if(branches == null || branches.size() == 0) {
     		System.out.println("There are no branches !");
     		return;
     	}
-        // Print table title
+        // Print table  
         System.out.println(BOX_BORDER);
         System.out.println(centerTextInBox("BRANCH DETAILS"));
         System.out.println(BOX_BORDER);
@@ -42,7 +42,7 @@ public class BranchPrinter {
                 System.out.println(DIVIDER_LINE);
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Error occurred while printing user: " + branch);
+                System.out.println("Error occurred while printing branch: " + branch);
             }
         }
     }
