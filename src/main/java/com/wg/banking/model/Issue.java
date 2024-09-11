@@ -1,6 +1,7 @@
 package com.wg.banking.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Issue {
 
@@ -76,4 +77,25 @@ public class Issue {
                 ", createdAt='" + createdAt + '\'' +
                 '}';
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(createdAt, issueID, message, status, userId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Issue other = (Issue) obj;
+		return Objects.equals(createdAt, other.createdAt) && Objects.equals(issueID, other.issueID)
+				&& Objects.equals(message, other.message) && status == other.status
+				&& Objects.equals(userId, other.userId);
+	}
+    
+    
 }

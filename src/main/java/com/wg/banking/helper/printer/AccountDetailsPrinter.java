@@ -10,7 +10,7 @@ public class AccountDetailsPrinter {
     private static final String HEADER_FORMAT = "%-15s | %-30s | %-15s | %-25s";
     private static final String ROW_FORMAT = "%-15s | %-30s | %-15.2f | %-25s";
 
-    private static final String BOX_BORDER = "=====================================================================================";
+    private static final String BOX_BORDER = "=======================================================================================";
     private static final String DIVIDER_LINE = "-------------------------------------------------------------------------------------";
 
     public static void printAccountDetails(List<AccountDetails> accounts) {
@@ -18,7 +18,7 @@ public class AccountDetailsPrinter {
     		System.out.println("Nothing to print !");
     		return;
     	}
-    	
+    	 
         // Print table title
         System.out.println(BOX_BORDER);
         System.out.println(centerTextInBox("ACCOUNT DETAILS"));

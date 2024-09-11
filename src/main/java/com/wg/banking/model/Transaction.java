@@ -1,6 +1,7 @@
 package com.wg.banking.model;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class Transaction {
     private String transactionId;
@@ -88,4 +89,27 @@ public class Transaction {
                 ", createdAt=" + createdAt +
                 '}';
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(amount, createdAt, destinationAccountId, sourceAccountId, transactionId, transactionType);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Transaction other = (Transaction) obj;
+		return Double.doubleToLongBits(amount) == Double.doubleToLongBits(other.amount)
+				&& Objects.equals(createdAt, other.createdAt)
+				&& Objects.equals(destinationAccountId, other.destinationAccountId)
+				&& Objects.equals(sourceAccountId, other.sourceAccountId)
+				&& Objects.equals(transactionId, other.transactionId) && transactionType == other.transactionType;
+	}
+    
+    
 }

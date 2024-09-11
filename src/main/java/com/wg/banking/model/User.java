@@ -1,6 +1,7 @@
 package com.wg.banking.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class User {
     private String userId; // Primary Key
@@ -160,4 +161,27 @@ public class User {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, age, createdAt, email, gender, name, password, phoneNo, role, updatedAt, userId,
+				username);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(address, other.address) && age == other.age && Objects.equals(createdAt, other.createdAt)
+				&& Objects.equals(email, other.email) && gender == other.gender && Objects.equals(name, other.name)
+				&& Objects.equals(password, other.password) && Objects.equals(phoneNo, other.phoneNo)
+				&& role == other.role && Objects.equals(updatedAt, other.updatedAt)
+				&& Objects.equals(userId, other.userId) && Objects.equals(username, other.username);
+	}
+    
 }

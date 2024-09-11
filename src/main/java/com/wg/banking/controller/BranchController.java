@@ -4,7 +4,6 @@ import com.wg.banking.constants.BranchConstants;
 import com.wg.banking.constants.StringConstants;
 import com.wg.banking.dao.UserDAO;
 import com.wg.banking.helper.GetUserInput;
-import com.wg.banking.helper.Printer;
 import com.wg.banking.helper.printer.BranchPrinter;
 import com.wg.banking.helper.printer.UserPrinter;
 import com.wg.banking.model.Branch;
@@ -24,8 +23,6 @@ public class BranchController {
     private static UserDAO userDAO = new UserDAO();
     private static UserService userService = new UserService(userDAO);
     
-    private static Printer<Branch> printer = new Printer<Branch>();
-
     public BranchController(BranchService branchService) {
         this.branchService = branchService;
         this.scanner = new Scanner(System.in);
@@ -34,7 +31,7 @@ public class BranchController {
     public void addBranch(Branch branch) {
         branchService.addBranch(branch);
     }
-
+ 
     public void getBranchById() {
     	try {
             System.out.print(StringConstants.ENTER_BRANCH_ID);
@@ -45,7 +42,6 @@ public class BranchController {
             	System.out.println(StringConstants.BRANCH_NOT_FOUND);
             	return;
             } 
-            printer.print(branch);
         } catch (Exception e) {
             System.out.println(StringConstants.ERROR_RETRIEVING_BRANCH + e.getMessage());
         }
@@ -182,6 +178,6 @@ public class BranchController {
     }
     
     public Branch getBranch(User user) {
-    	return branchService.getBranch(user);
+    	return branchService.getBranchByManagerId(user);
     }
 }

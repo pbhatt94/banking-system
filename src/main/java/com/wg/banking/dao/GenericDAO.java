@@ -24,7 +24,7 @@ public abstract class GenericDAO<T> {
 
     public T get(String query) throws SQLException, ClassNotFoundException {
     	T entity = null;
-    	try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    	try (PreparedStatement preparedStatement = connection.prepareStatement(query)) { 
     		ResultSet resultSet = preparedStatement.executeQuery();
 
     		if (resultSet.next()) {

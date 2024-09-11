@@ -1,6 +1,7 @@
 package com.wg.banking.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Account {
     private String accountNo;
@@ -83,4 +84,26 @@ public class Account {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(accountNo, balance, branchId, createdAt, ownerId, updatedAt);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Account other = (Account) obj;
+		return Objects.equals(accountNo, other.accountNo)
+				&& Double.doubleToLongBits(balance) == Double.doubleToLongBits(other.balance)
+				&& Objects.equals(branchId, other.branchId) && Objects.equals(createdAt, other.createdAt)
+				&& Objects.equals(ownerId, other.ownerId) && Objects.equals(updatedAt, other.updatedAt);
+	}
+    
+    
 }

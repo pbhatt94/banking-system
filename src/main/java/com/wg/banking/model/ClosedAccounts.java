@@ -1,6 +1,7 @@
 package com.wg.banking.model;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class ClosedAccounts {
 
@@ -52,4 +53,24 @@ public class ClosedAccounts {
                ", closedAt=" + closedAt +
                '}';
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(closedAt, id, username);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ClosedAccounts other = (ClosedAccounts) obj;
+		return Objects.equals(closedAt, other.closedAt) && Objects.equals(id, other.id)
+				&& Objects.equals(username, other.username);
+	}
+    
+    
 }

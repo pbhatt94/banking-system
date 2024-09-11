@@ -68,7 +68,7 @@ public class NotificationServiceTest {
         List<User> users = Collections.singletonList(user);
 
         when(notificationDAO.getAllNotifications()).thenReturn(notifications);
-        when(userService.getAllUsers()).thenReturn(users);
+        when(userService.getAllActiveUsers()).thenReturn(users);
 
         // Execute
         List<NotificationDetails> result = notificationService.getAllNotificationDetails();
@@ -101,8 +101,8 @@ public class NotificationServiceTest {
         List<Account> accounts = Collections.singletonList(account);
 
         when(notificationDAO.getAllNotifications()).thenReturn(notifications);
-        when(userService.getAllUsers()).thenReturn(users);
-        when(branchService.getBranch(any(User.class))).thenReturn(branch);
+        when(userService.getAllActiveUsers()).thenReturn(users);
+        when(branchService.getBranchByManagerId(any(User.class))).thenReturn(branch);
         when(accountService.getAllAccounts(anyString())).thenReturn(accounts);
 
         // Execute

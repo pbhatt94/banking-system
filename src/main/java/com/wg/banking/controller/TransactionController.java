@@ -1,7 +1,6 @@
 package com.wg.banking.controller;
 
 import com.wg.banking.constants.TransactionConstants;
-import com.wg.banking.helper.Printer;
 import com.wg.banking.helper.UniqueIdGenerator;
 import com.wg.banking.helper.printer.TransactionPrinter;
 import com.wg.banking.model.Transaction;
@@ -18,7 +17,6 @@ public class TransactionController {
 	private static final String TRANSACTION_NOT_FOUND = "Transaction not found.";
 	private TransactionService transactionService;
     
-    private static Printer<Transaction> printer = new Printer<Transaction>();
 
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
@@ -29,7 +27,7 @@ public class TransactionController {
 			transactionService.addTransaction(transaction);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-		}
+		} 
     }
 
     public void getTransactionById(String transactionId) {
@@ -38,7 +36,6 @@ public class TransactionController {
             if (transaction == null) {
                 System.out.println(TRANSACTION_NOT_FOUND);
             }
-            printer.print(transaction);
         } catch (Exception e) {
             System.out.println(ERROR_RETRIEVING_TRANSACTIONS + e.getMessage());
         }

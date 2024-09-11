@@ -66,7 +66,7 @@ public class AccountService {
 	public boolean updateAccount(Account account) {
 		try {
 			return accountDAO.updateAccount(account);
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (ClassNotFoundException | SQLException e) { 
 			logger.severe(e.getMessage());
 			e.printStackTrace();
 		}

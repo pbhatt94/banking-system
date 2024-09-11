@@ -48,7 +48,7 @@ public class UserController {
     public List<User> getAllUsers() {
     	List<User> users = new ArrayList<>();
         try {
-            users = userService.getAllUsers();
+            users = userService.getAllActiveUsers();
         } catch (Exception e) {
             System.out.println(StringConstants.ERROR_RETRIEVING_USER + e.getMessage());
         }

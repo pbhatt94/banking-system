@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.wg.banking.constants.ClosedAccountsConstants;
-import com.wg.banking.constants.IssueConstants;
 import com.wg.banking.model.ClosedAccounts;
 
 public class ClosedAccountsDAO extends GenericDAO<ClosedAccounts> {

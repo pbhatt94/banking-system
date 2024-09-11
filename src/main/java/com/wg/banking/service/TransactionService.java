@@ -92,7 +92,7 @@ public class TransactionService {
 	}
 
 	public void handleDeposit(Transaction transaction) {
-		try { 
+		try {
 			if (transaction == null) {
 				return;
 			}
@@ -146,7 +146,7 @@ public class TransactionService {
 				System.out.println(
 						StringConstants.NO_ACCOUNT_EXISTS_WITH_ACCOUNT_NUMBER + transaction.getDestinationAccountId());
 				return;
-			} 
+			}
 
 			double originalBalanceForSource = sourceAccount.getBalance();
 
@@ -169,7 +169,7 @@ public class TransactionService {
 			double newBalanceForSource = originalBalanceForSource - transaction.getAmount();
 			sourceAccount.setBalance(newBalanceForSource);
 			accountService.updateAccount(sourceAccount);
-			System.out.println(StringConstants.SOURCE_ACCOUNT_BALANCE_UPDATED); 
+			System.out.println(StringConstants.SOURCE_ACCOUNT_BALANCE_UPDATED);
 
 			double originalBalanceForDestination = destinationAccount.getBalance();
 			double newBalanceForDestination = originalBalanceForDestination + transaction.getAmount();
@@ -276,8 +276,9 @@ public class TransactionService {
 							+ "\tThank you for using our banking services.",
 					transaction.getAmount(), transaction.getTransactionId(), transaction.getCreatedAt(), newBalance);
 			String userId = accountService.getUser(transaction.getSourceAccountId()).getOwnerId();
+			System.out.println(userId);
 			notification.setReceiverId(userId);
-			notification.setMessage(WITHDRAWAL_NOTIFICATION_MESSAGE);
+			notification.setMessage(WITHDRAWAL_NOTIFICATION_MESSAGE); 
 			break;
 		case TransactionConstants.DEPOSIT_TYPE:
 			String depositMessage = String.format("Your deposit of $%.2f has been successfully processed.\n\n"

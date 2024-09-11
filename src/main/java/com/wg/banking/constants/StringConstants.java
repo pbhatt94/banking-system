@@ -335,6 +335,5 @@ public final class StringConstants {
 	public static final String NO_ACCOUNT_EXISTS_WITH_ACCOUNT_NUMBER = "No account exists with Account Number = ";
 	public static final String NOT_ENOUGH_FUNDS = "Not Enough Funds !";
 	
-	
-
+	public static final String ROLE_CANNOT_BE_UPDATED = "Role cannot be updated!";
 }

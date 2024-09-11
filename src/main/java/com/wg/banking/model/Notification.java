@@ -1,6 +1,7 @@
 package com.wg.banking.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Notification {
     private String notificationId;           
@@ -75,4 +76,25 @@ public class Notification {
                 ", createdAt=" + createdAt +
                 '}';
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(createdAt, message, notificationId, notificationType, receiverId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Notification other = (Notification) obj;
+		return Objects.equals(createdAt, other.createdAt) && Objects.equals(message, other.message)
+				&& Objects.equals(notificationId, other.notificationId) && notificationType == other.notificationType
+				&& Objects.equals(receiverId, other.receiverId);
+	}
+    
+    
 }

@@ -10,10 +10,7 @@ import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import com.wg.banking.dao.AccountDAO;
-import com.wg.banking.dao.BranchDAO;
 import com.wg.banking.dao.NotificationDAO;
-import com.wg.banking.dao.UserDAO;
 import com.wg.banking.helper.LoggingUtil;
 import com.wg.banking.model.Account;
 import com.wg.banking.model.Branch;
@@ -57,7 +54,7 @@ public class NotificationService {
     				.collect(Collectors.toList()); 
     		
     		
-    		List<User> allUsers = userService.getAllUsers();
+    		List<User> allUsers = userService.getAllActiveUsers();
     		Map<String, Object> userIdToObjectMapping = new HashMap<>();
     		userIdToObjectMapping = allUsers.stream()
 								            .filter(user -> user != null && user.getUserId() != null)
@@ -84,14 +81,14 @@ public class NotificationService {
     				.collect(Collectors.toList()); 
     		
     		
-    		Branch branch = branchService.getBranch(manager);
+    		Branch branch = branchService.getBranchByManagerId(manager);
     		
     		List<Account> accounts = accountService.getAllAccounts(branch.getBranchId());
     		Set<String> branchAccountIDs = accounts.stream()
     												.map(account -> account.getOwnerId())
     												.collect(Collectors.toSet());
     		
-    		List<User> allUsers = userService.getAllUsers()
+    		List<User> allUsers = userService.getAllActiveUsers()
     										.stream()
     										.filter(user -> branchAccountIDs.contains(user.getUserId()))
     										.collect(Collectors.toList());

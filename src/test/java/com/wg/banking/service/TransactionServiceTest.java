@@ -50,7 +50,7 @@ public class TransactionServiceTest {
 
 	@Test
 	void testHandleWithdrawalSuccess() throws SQLException, ClassNotFoundException, InsufficientBalanceException {
-		// Arrange
+		// Arrange 
 		String accountNo = "acc1001";
 		String ownerId = "user125";
 		String branchId = "branch101";
@@ -61,7 +61,7 @@ public class TransactionServiceTest {
 		account.setOwnerId(ownerId);
 		account.setBranchId(branchId);
 		account.setCreatedAt(now);
-		account.setUpdatedAt(now);
+		account.setUpdatedAt(now); 
 
 		double amount = 100.0;
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -78,7 +78,7 @@ public class TransactionServiceTest {
 		when(accountService.updateAccount(any(Account.class))).thenReturn(true);
 		when(transactionDAO.addTransaction(any(Transaction.class))).thenReturn(true);
 		when(accountService.getUser(any(String.class))).thenReturn(account);
-
+ 
 		transactionService.handleWithdrawal(transaction);
 
 		assertEquals(1900.0, account.getBalance());
@@ -88,7 +88,7 @@ public class TransactionServiceTest {
 	}
 
 	@Test
-	void testHandleWithdrawalInsufficientFunds() throws SQLException, ClassNotFoundException {
+	void testHandleWithdrawal_insufficientFunds() throws SQLException, ClassNotFoundException {
 		// Arrange
 		String accountNo = "123";
 		double amount = 300.0;
@@ -106,20 +106,20 @@ public class TransactionServiceTest {
 	}
 
 	@Test
-	void testHandleDepositSuccess() throws SQLException, ClassNotFoundException {
+	void testHandleDeposit_success() throws SQLException, ClassNotFoundException {
 		// Arrange
-		String accountId = "456";
+		String accountNo = "456";
 		double amount = 200.0;
 		Account account = new Account();
 		account.setBalance(100.0);
-		account.setAccountNo(accountId);
+		account.setAccountNo(accountNo);
 		account.setOwnerId("user12");
 		Transaction transaction = new Transaction();
 		transaction.setAmount(amount);
-		transaction.setDestinationAccountId(accountId);
+		transaction.setDestinationAccountId(accountNo);
 		transaction.setTransactionType(Transaction.TransactionType.DEPOSIT);
 
-		when(accountService.getAccount(accountId)).thenReturn(account);
+		when(accountService.getAccount(accountNo)).thenReturn(account);
 		when(accountService.updateAccount(any(Account.class))).thenReturn(true);
 		when(transactionDAO.addTransaction(any(Transaction.class))).thenReturn(true);
 		when(accountService.getUser(any(String.class))).thenReturn(account);
@@ -133,9 +133,36 @@ public class TransactionServiceTest {
 		verify(transactionDAO).addTransaction(transaction);
 		verify(notificationService, times(1)).addNotification(any(Notification.class));
 	}
+	
+	@Test
+	void testHandleDeposit_failure() throws SQLException, ClassNotFoundException {
+		// Arrange
+		String accountId = "456";
+		Account account = new Account();
+		double originalBalance = 100.0;
+		account.setBalance(originalBalance);
+		account.setAccountNo(accountId);
+		account.setOwnerId("user12");
+		Transaction transaction = new Transaction();
+		double amount = 200.0;
+		transaction.setAmount(amount);
+		transaction.setDestinationAccountId(accountId);
+		transaction.setTransactionType(Transaction.TransactionType.DEPOSIT);
+		
+		when(accountService.getAccount(accountId)).thenReturn(null);
+		
+		// Act
+		transactionService.handleDeposit(transaction);
+		
+		// Assert
+		assertEquals(originalBalance, account.getBalance());
+		verify(accountService, never()).updateAccount(account);
+		verify(transactionDAO, never()).addTransaction(transaction);
+		verify(notificationService, never()).addNotification(any(Notification.class));
+	}
 
 	@Test
-	void testHandleTransferSuccess() throws SQLException, ClassNotFoundException, InsufficientBalanceException {
+	void testHandleTransfer_success() throws SQLException, ClassNotFoundException, InsufficientBalanceException {
 		// Arrange
 		String sourceAccountId = "789";
 		String destinationAccountId = "101";
@@ -173,6 +200,40 @@ public class TransactionServiceTest {
 		verify(transactionDAO).addTransaction(transaction);
 		verify(notificationService).addNotification(any(Notification.class));
 	}
+	
+    @Test
+    void testHandleTransfer_insufficientBalance() throws SQLException, ClassNotFoundException {
+        // Arrange
+        String sourceAccountId = "789";
+        String destinationAccountId = "101";
+        double transactionAmount = 150.0; // Greater than source balance
+
+        Account sourceAccount = new Account();
+        sourceAccount.setBalance(100.0);
+        sourceAccount.setAccountNo(sourceAccountId);
+        sourceAccount.setOwnerId("user1");
+
+        Account destinationAccount = new Account();
+        destinationAccount.setBalance(200.0);
+        destinationAccount.setAccountNo(destinationAccountId);
+        destinationAccount.setOwnerId("user2");
+
+        Transaction transaction = new Transaction();
+        transaction.setAmount(transactionAmount);
+        transaction.setSourceAccountId(sourceAccountId);
+        transaction.setDestinationAccountId(destinationAccountId);
+        transaction.setTransactionType(Transaction.TransactionType.TRANSFER);
+
+        when(accountService.getAccount(sourceAccountId)).thenReturn(sourceAccount);
+
+        // Act & Assert
+        transactionService.handleTransfer(transaction);
+
+        // Verify no updates or transactions were made
+        verify(accountService, never()).updateAccount(any(Account.class));
+        verify(transactionDAO, never()).addTransaction(any(Transaction.class));
+        verify(notificationService, never()).addNotification(any(Notification.class));
+    }
 
 	@Test
 	void testGetTransactionById() throws SQLException, ClassNotFoundException {

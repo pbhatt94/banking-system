@@ -2,7 +2,6 @@ package com.wg.banking.helper;
 
 import java.io.Console;
 
-
 public class SecureInput {
 	public static String getSecureInput(String input) {
 		Console console = System.console();

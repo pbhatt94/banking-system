@@ -28,7 +28,7 @@ public class AccountDAO extends GenericDAO<Account> {
 		
 		return account;
 	}
-
+ 
 	
 	public Account getAccount(User user) throws ClassNotFoundException, SQLException {
 		String query = "SELECT * FROM Account WHERE owner_id = \"" + user.getUserId() + "\"";

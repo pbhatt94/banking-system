@@ -80,7 +80,7 @@ public class AdminMenu {
 
 	private static IssueDAO issueDAO = new IssueDAO();
 	private static IssueService issueService = new IssueService(issueDAO);
-	private static IssueController issueController = new IssueController(issueService);
+	private static IssueController issueController = new IssueController(issueService); 
 
 	private static ClosedAccountsDAO closedAccountsDAO = new ClosedAccountsDAO();
 	private static ClosedAccountsService closedAccountsService = new ClosedAccountsService(closedAccountsDAO);
@@ -94,10 +94,10 @@ public class AdminMenu {
 	private static NotificationService notificationService = new NotificationService(notificationDAO, userService,
 			branchService, accountService);
 	private static NotificationController notificationController = new NotificationController(notificationService);
-	private static TransactionService transactionService2 = new TransactionService(transactionDAO, accountService, notificationService); 
+//	private static TransactionService transactionService2 = new TransactionService(transactionDAO, accountService, notificationService); 
 	private static Logger logger = LoggingUtil.getLogger(Menu.class);
 
-	private static Scanner scanner = new Scanner(System.in);
+	private static Scanner scanner = new Scanner(System.in); 
  
 	public static void showAdminMenu(User user) {
 		int choice;

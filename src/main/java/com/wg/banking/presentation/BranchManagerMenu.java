@@ -96,7 +96,7 @@ public class BranchManagerMenu {
 
             switch (choice) {
                 case 1:
-                	String branchName = branchService.getBranch(user).getBranchName();
+                	String branchName = branchService.getBranchByManagerId(user).getBranchName();
                     displayAccountDetailsManager(user, branchName);
                     break;
                 case 2:

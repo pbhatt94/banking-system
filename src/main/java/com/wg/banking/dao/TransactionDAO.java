@@ -2,7 +2,6 @@ package com.wg.banking.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 import com.wg.banking.constants.TransactionConstants;
@@ -12,7 +11,6 @@ public class TransactionDAO extends GenericDAO<Transaction> {
 	
 	public TransactionDAO() {
 		super();
-		AccountDAO accountDAO = new AccountDAO(); 
 	}
 
 	@Override

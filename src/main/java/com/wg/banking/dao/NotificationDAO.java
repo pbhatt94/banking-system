@@ -21,7 +21,7 @@ public class NotificationDAO extends GenericDAO<Notification> {
 		notification.setMessage(resultSet.getString(NotificationConstants.MESSAGE_COLUMN));
 		String transactionTypeString = resultSet.getString(NotificationConstants.NOTIFICATION_TYPE_COLUMN);
 		notification.setNotificationType(Notification.NotificationType.valueOf(transactionTypeString));
-		notification.setReceiverId(resultSet.getString(NotificationConstants.RECEIVER_ID_COLUMN));
+		notification.setReceiverId(resultSet.getString(NotificationConstants.RECEIVER_ID_COLUMN)); 
 		notification.setCreatedAt(resultSet.getDate(NotificationConstants.CREATED_AT_COLUMN));
 		
 		return notification;

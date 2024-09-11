@@ -53,7 +53,7 @@ public class NotificationController {
         }
         
         System.out.print(StringConstants.SELECT_THE_RECEIVER);
-        List<User> users = userService.getAllUsers()
+        List<User> users = userService.getAllActiveUsers()
         								.stream()
         								.filter(user -> user.getRole().toString().equalsIgnoreCase(UserConstants.CUSTOMER))
         								.collect(Collectors.toList());

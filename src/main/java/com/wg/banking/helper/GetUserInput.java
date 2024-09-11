@@ -3,15 +3,28 @@ package com.wg.banking.helper;
 import java.util.Scanner;
 
 public class GetUserInput {
+//	public static int getUserChoice() {
+//		Scanner scanner = new Scanner(System.in);
+//        while (!scanner.hasNextInt()) {
+//            System.out.println("Invalid input. Please enter a Valid Input");
+//            scanner.nextLine(); 
+//            System.out.print("Enter your choice: ");
+//        }
+//        int value = scanner.nextInt(); 
+//        return value;
+//    }
+	
 	public static int getUserChoice() {
 		Scanner scanner = new Scanner(System.in);
-        while (!scanner.hasNextInt()) {
-            System.out.println("Invalid input. Please enter a Valid Input");
-            scanner.next(); 
-            System.out.print("Enter your choice: ");
+        while (true) {
+            String input = scanner.nextLine();
+            try {
+                int value = Integer.parseInt(input);
+                return value;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
         }
-        int value = scanner.nextInt();
-        return value;
     }
 	
     public static double getDoubleInput() {

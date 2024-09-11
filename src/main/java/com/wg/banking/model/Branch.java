@@ -1,6 +1,7 @@
 package com.wg.banking.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Branch {
     private String branchId;          
@@ -81,4 +82,26 @@ public class Branch {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(branchAddress, branchId, branchManagerId, branchName, createdAt, updatedAt);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Branch other = (Branch) obj;
+		return Objects.equals(branchAddress, other.branchAddress) && Objects.equals(branchId, other.branchId)
+				&& Objects.equals(branchManagerId, other.branchManagerId)
+				&& Objects.equals(branchName, other.branchName) && Objects.equals(createdAt, other.createdAt)
+				&& Objects.equals(updatedAt, other.updatedAt);
+	}
+    
+    
 }

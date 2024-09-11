@@ -27,9 +27,9 @@ public class UserDAO extends GenericDAO<User> {
     public List<User> getAllUsers() throws ClassNotFoundException, SQLException {
         String query = String.format("SELECT * FROM %s", UserConstants.USER_TABLE_NAME);
         return getAll(query);
-    }
+    } 
 
-    public boolean addUser(User user) throws ClassNotFoundException, SQLException  {
+    public boolean addUser(User user) throws ClassNotFoundException, SQLException {
     	String query = String.format(
     		    "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
     		    UserConstants.USER_TABLE_NAME,

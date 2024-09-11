@@ -11,7 +11,6 @@ import com.wg.banking.constants.StringConstants;
 import com.wg.banking.dao.BranchDAO;
 import com.wg.banking.dao.UserDAO;
 import com.wg.banking.helper.GetUserInput;
-import com.wg.banking.helper.Printer;
 import com.wg.banking.helper.printer.AccountDetailsPrinter;
 import com.wg.banking.helper.printer.UserPrinter;
 import com.wg.banking.model.Account;
@@ -30,11 +29,10 @@ public class AccountController {
     private BranchDAO branchDAO;
     private BranchService branchService;
     
-    private static Printer<Account> printer = new Printer<Account>();
 
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
-        this.scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in); 
         userDAO = new UserDAO();
         userService = new UserService(userDAO);
         branchDAO = new BranchDAO();
@@ -78,9 +76,6 @@ public class AccountController {
     public void getAllAccounts(String branchId) {
     	try {
             List<Account> accounts = accountService.getAllAccounts(branchId);
-            for (Account account : accounts) {
-                printer.print(account);
-            }
         } catch (Exception e) {
             System.out.println(StringConstants.ERROR_RETRIEVING_ACCOUNT + e.getMessage());
         }
