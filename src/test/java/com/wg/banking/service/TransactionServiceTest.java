@@ -1,6 +1,8 @@
 package com.wg.banking.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -49,8 +51,8 @@ public class TransactionServiceTest {
 	private TransactionService transactionService;
 
 	@Test
-	void testHandleWithdrawalSuccess() throws SQLException, ClassNotFoundException, InsufficientBalanceException {
-		// Arrange 
+	void testHandleWithdrawal_success() throws SQLException, ClassNotFoundException, InsufficientBalanceException {
+		// Arrange
 		String accountNo = "acc1001";
 		String ownerId = "user125";
 		String branchId = "branch101";
@@ -61,7 +63,7 @@ public class TransactionServiceTest {
 		account.setOwnerId(ownerId);
 		account.setBranchId(branchId);
 		account.setCreatedAt(now);
-		account.setUpdatedAt(now); 
+		account.setUpdatedAt(now);
 
 		double amount = 100.0;
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -78,7 +80,7 @@ public class TransactionServiceTest {
 		when(accountService.updateAccount(any(Account.class))).thenReturn(true);
 		when(transactionDAO.addTransaction(any(Transaction.class))).thenReturn(true);
 		when(accountService.getUser(any(String.class))).thenReturn(account);
- 
+
 		transactionService.handleWithdrawal(transaction);
 
 		assertEquals(1900.0, account.getBalance());
@@ -99,7 +101,7 @@ public class TransactionServiceTest {
 		transaction.setAmount(amount);
 		transaction.setSourceAccountId(accountNo);
 
-		// Act & Assert
+		// Act & Assert 
 		verify(accountService, never()).updateAccount(any(Account.class));
 		verify(transactionDAO, never()).addTransaction(any(Transaction.class));
 		verify(notificationService, never()).addNotification(any(Notification.class));
@@ -133,9 +135,9 @@ public class TransactionServiceTest {
 		verify(transactionDAO).addTransaction(transaction);
 		verify(notificationService, times(1)).addNotification(any(Notification.class));
 	}
-	
+
 	@Test
-	void testHandleDeposit_failure() throws SQLException, ClassNotFoundException {
+	void testHandleDeposit_accountNotFound() throws SQLException, ClassNotFoundException {
 		// Arrange
 		String accountId = "456";
 		Account account = new Account();
@@ -148,12 +150,12 @@ public class TransactionServiceTest {
 		transaction.setAmount(amount);
 		transaction.setDestinationAccountId(accountId);
 		transaction.setTransactionType(Transaction.TransactionType.DEPOSIT);
-		
+
 		when(accountService.getAccount(accountId)).thenReturn(null);
-		
+
 		// Act
 		transactionService.handleDeposit(transaction);
-		
+
 		// Assert
 		assertEquals(originalBalance, account.getBalance());
 		verify(accountService, never()).updateAccount(account);
@@ -200,43 +202,78 @@ public class TransactionServiceTest {
 		verify(transactionDAO).addTransaction(transaction);
 		verify(notificationService).addNotification(any(Notification.class));
 	}
-	
-    @Test
-    void testHandleTransfer_insufficientBalance() throws SQLException, ClassNotFoundException {
-        // Arrange
-        String sourceAccountId = "789";
-        String destinationAccountId = "101";
-        double transactionAmount = 150.0; // Greater than source balance
-
-        Account sourceAccount = new Account();
-        sourceAccount.setBalance(100.0);
-        sourceAccount.setAccountNo(sourceAccountId);
-        sourceAccount.setOwnerId("user1");
-
-        Account destinationAccount = new Account();
-        destinationAccount.setBalance(200.0);
-        destinationAccount.setAccountNo(destinationAccountId);
-        destinationAccount.setOwnerId("user2");
-
-        Transaction transaction = new Transaction();
-        transaction.setAmount(transactionAmount);
-        transaction.setSourceAccountId(sourceAccountId);
-        transaction.setDestinationAccountId(destinationAccountId);
-        transaction.setTransactionType(Transaction.TransactionType.TRANSFER);
-
-        when(accountService.getAccount(sourceAccountId)).thenReturn(sourceAccount);
-
-        // Act & Assert
-        transactionService.handleTransfer(transaction);
-
-        // Verify no updates or transactions were made
-        verify(accountService, never()).updateAccount(any(Account.class));
-        verify(transactionDAO, never()).addTransaction(any(Transaction.class));
-        verify(notificationService, never()).addNotification(any(Notification.class));
-    }
 
 	@Test
-	void testGetTransactionById() throws SQLException, ClassNotFoundException {
+	void testHandleTransfer_insufficientBalance() throws SQLException, ClassNotFoundException {
+		// Arrange
+		String sourceAccountId = "789";
+		String destinationAccountId = "101";
+		double transactionAmount = 150.0; // Greater than source balance
+
+		Account sourceAccount = new Account();
+		sourceAccount.setBalance(100.0);
+		sourceAccount.setAccountNo(sourceAccountId);
+		sourceAccount.setOwnerId("user1");
+
+		Account destinationAccount = new Account();
+		destinationAccount.setBalance(200.0);
+		destinationAccount.setAccountNo(destinationAccountId);
+		destinationAccount.setOwnerId("user2");
+
+		Transaction transaction = new Transaction();
+		transaction.setAmount(transactionAmount);
+		transaction.setSourceAccountId(sourceAccountId);
+		transaction.setDestinationAccountId(destinationAccountId);
+		transaction.setTransactionType(Transaction.TransactionType.TRANSFER);
+
+		when(accountService.getAccount(sourceAccountId)).thenReturn(sourceAccount);
+
+		// Act & Assert
+		transactionService.handleTransfer(transaction);
+
+		// Verify no updates or transactions were made
+		verify(accountService, never()).updateAccount(any(Account.class));
+		verify(transactionDAO, never()).addTransaction(any(Transaction.class));
+		verify(notificationService, never()).addNotification(any(Notification.class));
+	}
+
+	@Test
+	void testHandleTransfer_accountNotFound() throws SQLException, ClassNotFoundException {
+		// Arrange
+		String sourceAccountId = "789";
+		String destinationAccountId = "101";
+
+		Account sourceAccount = new Account();
+		sourceAccount.setBalance(100.0);
+		sourceAccount.setAccountNo(sourceAccountId);
+		sourceAccount.setOwnerId("user1");
+
+		Account destinationAccount = new Account();
+		destinationAccount.setBalance(200.0);
+		destinationAccount.setAccountNo(destinationAccountId);
+		destinationAccount.setOwnerId("user2");
+
+		Transaction transaction = new Transaction();
+		double transactionAmount = 50.0;
+		transaction.setAmount(transactionAmount);
+		transaction.setSourceAccountId(sourceAccountId);
+		transaction.setDestinationAccountId(destinationAccountId);
+		transaction.setTransactionType(Transaction.TransactionType.TRANSFER);
+
+		when(accountService.getAccount(sourceAccountId)).thenReturn(sourceAccount);
+		when(accountService.getAccount(destinationAccountId)).thenReturn(null);
+
+		// Act & Assert
+		transactionService.handleTransfer(transaction);
+
+		// Verify no updates or transactions were made
+		verify(accountService, never()).updateAccount(any(Account.class));
+		verify(transactionDAO, never()).addTransaction(any(Transaction.class));
+		verify(notificationService, never()).addNotification(any(Notification.class));
+	}
+
+	@Test
+	void testGetTransactionById_success() throws SQLException, ClassNotFoundException {
 		// Arrange
 		String transactionId = "tx123";
 		Transaction transaction = new Transaction();
@@ -250,15 +287,32 @@ public class TransactionServiceTest {
 	}
 
 	@Test
+	void testGetTransactionById_failure() throws SQLException, ClassNotFoundException {
+		// Arrange
+		String transactionId = "tx123";
+		when(transactionDAO.getTransactionById(transactionId)).thenReturn(null);
+
+		// Act
+		Transaction result = transactionService.getTransactionById(transactionId);
+
+		// Assert
+		assertNull(result);
+	}
+
+	@Test
 	void testGetAllTransactions() throws SQLException, ClassNotFoundException {
 		// Arrange
 		List<Transaction> transactions = new ArrayList<>();
+		transactions.add(new Transaction());
+		transactions.add(new Transaction());
 		when(transactionDAO.getAllTransactions()).thenReturn(transactions);
 
 		// Act
 		List<Transaction> result = transactionService.getAllTransactions();
 
 		// Assert
+		assertNotNull(result);
+		assertEquals(2, result.size());
 		assertEquals(transactions, result);
 	}
 
