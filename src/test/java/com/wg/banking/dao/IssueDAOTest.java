@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.wg.banking.constants.IssueConstants;
+import com.wg.banking.dao.impl.IssueDAOImpl;
 import com.wg.banking.model.Issue;
 
 public class IssueDAOTest {
@@ -33,7 +34,7 @@ public class IssueDAOTest {
     private final Date createdAt = Date.valueOf("2024-09-10");
 
     @InjectMocks
-    private IssueDAO issueDAO;
+    private IssueDAOImpl issueDAO;
 
     @Mock
     private Connection connection;

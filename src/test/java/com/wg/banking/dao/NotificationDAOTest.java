@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.wg.banking.constants.NotificationConstants;
+import com.wg.banking.dao.impl.NotificationDAOImpl;
 import com.wg.banking.model.Notification;
 
 public class NotificationDAOTest {
@@ -32,8 +33,8 @@ public class NotificationDAOTest {
     private final String createdAt = "2024-09-10";
 
     @InjectMocks
-    private NotificationDAO notificationDAO;
-
+    private NotificationDAOImpl notificationDAO;
+ 
     @Mock
     private Connection connection;
 

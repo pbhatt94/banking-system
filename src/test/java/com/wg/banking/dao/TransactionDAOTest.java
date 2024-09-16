@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.wg.banking.constants.TransactionConstants;
+import com.wg.banking.dao.impl.TransactionDAOImpl;
 import com.wg.banking.model.Transaction;
 
 public class TransactionDAOTest {
@@ -33,7 +34,7 @@ public class TransactionDAOTest {
     private final String createdAt = "2024-09-10 12:00:00";
 
     @InjectMocks
-    private TransactionDAO transactionDAO;
+    private TransactionDAOImpl transactionDAO;
 
     @Mock
     private Connection connection;

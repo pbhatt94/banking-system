@@ -3,6 +3,7 @@ package com.wg.banking.controller;
 import com.wg.banking.constants.StringConstants;
 import com.wg.banking.constants.UserConstants;
 import com.wg.banking.dao.UserDAO;
+import com.wg.banking.dao.impl.UserDAOImpl;
 import com.wg.banking.helper.GetUserInput;
 import com.wg.banking.helper.UniqueIdGenerator;
 import com.wg.banking.helper.ValidateInputs;
@@ -29,7 +30,7 @@ public class NotificationController {
     public NotificationController(NotificationService notificationService) {
         this.notificationService = notificationService;
         this.scanner = new Scanner(System.in);
-        userDAO = new UserDAO();
+        userDAO = new UserDAOImpl();
         userService = new UserService(userDAO);
     }
 

@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.wg.banking.constants.UserConstants;
+import com.wg.banking.dao.impl.UserDAOImpl;
 import com.wg.banking.model.User;
 
 public class UserDAOTest {
@@ -36,7 +37,7 @@ public class UserDAOTest {
 	private final String role = "CUSTOMER";
 	
 	@InjectMocks
-	private UserDAO userDAO;
+	private UserDAOImpl userDAO;
  
 	@Mock
 	private Connection connection;

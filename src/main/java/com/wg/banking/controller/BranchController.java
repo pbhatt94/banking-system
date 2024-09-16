@@ -3,6 +3,7 @@ package com.wg.banking.controller;
 import com.wg.banking.constants.BranchConstants;
 import com.wg.banking.constants.StringConstants;
 import com.wg.banking.dao.UserDAO;
+import com.wg.banking.dao.impl.UserDAOImpl;
 import com.wg.banking.helper.GetUserInput;
 import com.wg.banking.helper.printer.BranchPrinter;
 import com.wg.banking.helper.printer.UserPrinter;
@@ -20,7 +21,7 @@ public class BranchController {
 
 	private BranchService branchService;
     private Scanner scanner;
-    private static UserDAO userDAO = new UserDAO();
+    private static UserDAO userDAO = new UserDAOImpl();
     private static UserService userService = new UserService(userDAO);
     
     public BranchController(BranchService branchService) {

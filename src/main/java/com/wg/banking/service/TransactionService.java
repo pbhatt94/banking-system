@@ -12,6 +12,8 @@ import com.wg.banking.constants.StringConstants;
 import com.wg.banking.constants.TransactionConstants;
 import com.wg.banking.dao.AccountDAO;
 import com.wg.banking.dao.NotificationDAO;
+import com.wg.banking.dao.impl.AccountDAOImpl;
+import com.wg.banking.dao.impl.NotificationDAOImpl;
 import com.wg.banking.dao.TransactionDAO;
 import com.wg.banking.helper.InsufficientBalanceException;
 import com.wg.banking.helper.LoggingUtil;
@@ -35,9 +37,9 @@ public class TransactionService {
 
 	public TransactionService(TransactionDAO transactionDAO) {
 		this.transactionDAO = transactionDAO;
-		accountDAO = new AccountDAO();
+		accountDAO = new AccountDAOImpl();
 		accountService = new AccountService(accountDAO);
-		notificationDAO = new NotificationDAO();
+		notificationDAO = new NotificationDAOImpl();
 		notificationService = new NotificationService(notificationDAO);
 	}
 

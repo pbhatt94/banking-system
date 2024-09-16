@@ -11,74 +11,57 @@ import java.util.stream.Collectors;
 import com.wg.banking.constants.NotificationConstants;
 import com.wg.banking.constants.StringConstants;
 import com.wg.banking.constants.TransactionConstants;
-import com.wg.banking.controller.AccountController;
 import com.wg.banking.controller.BranchController;
-import com.wg.banking.controller.ClosedAccountsController;
 import com.wg.banking.controller.IssueController;
 import com.wg.banking.controller.NotificationController;
 import com.wg.banking.controller.TransactionController;
-import com.wg.banking.controller.UserController;
-import com.wg.banking.dao.AccountDAO;
 import com.wg.banking.dao.AccountDetailsDAO;
 import com.wg.banking.dao.BranchDAO;
-import com.wg.banking.dao.ClosedAccountsDAO;
 import com.wg.banking.dao.IssueDAO;
 import com.wg.banking.dao.NotificationDAO;
+import com.wg.banking.dao.impl.AccountDetailsDAOImpl;
+import com.wg.banking.dao.impl.BranchDAOImpl;
+import com.wg.banking.dao.impl.IssueDAOImpl;
+import com.wg.banking.dao.impl.NotificationDAOImpl;
+import com.wg.banking.dao.impl.TransactionDAOImpl;
 import com.wg.banking.dao.TransactionDAO;
-import com.wg.banking.dao.UserDAO;
 import com.wg.banking.helper.GetUserInput;
 import com.wg.banking.helper.LoggingUtil;
 import com.wg.banking.helper.printer.AccountDetailsPrinter;
 import com.wg.banking.helper.printer.IssuePrinter;
 import com.wg.banking.helper.printer.NotificationDetailsPrinter;
-import com.wg.banking.helper.printer.NotificationPrinter;
 import com.wg.banking.helper.printer.TransactionPrinter;
 import com.wg.banking.model.AccountDetails;
 import com.wg.banking.model.Branch;
 import com.wg.banking.model.Issue;
-import com.wg.banking.model.Notification;
 import com.wg.banking.model.NotificationDetails;
 import com.wg.banking.model.Transaction;
 import com.wg.banking.model.User;
 import com.wg.banking.service.AccountDetailsService;
-import com.wg.banking.service.AccountService;
 import com.wg.banking.service.BranchService;
-import com.wg.banking.service.ClosedAccountsService;
 import com.wg.banking.service.IssueService;
 import com.wg.banking.service.NotificationService;
 import com.wg.banking.service.TransactionService;
-import com.wg.banking.service.UserService;
 
 public class BranchManagerMenu {
-	private static UserDAO userDAO = new UserDAO();
-	private static UserService userService = new UserService(userDAO);
-	private static UserController userController= new UserController(userService); 
 	
-	private static BranchDAO branchDAO = new BranchDAO(); 
+	private static BranchDAO branchDAO = new BranchDAOImpl(); 
 	private static BranchService branchService = new BranchService(branchDAO);
 	private static BranchController branchController= new BranchController(branchService);
 	
-	private static AccountDAO accountDAO = new AccountDAO(); 
-	private static AccountService accountService = new AccountService(accountDAO);
-	private static AccountController accountController= new AccountController(accountService);
-	
-	private static TransactionDAO transactionDAO = new TransactionDAO(); 
+	private static TransactionDAO transactionDAO = new TransactionDAOImpl(); 
 	private static TransactionService transactionService = new TransactionService(transactionDAO);
 	private static TransactionController transactionController= new TransactionController(transactionService);
 	 
-	private static NotificationDAO notificationDAO = new NotificationDAO(); 
+	private static NotificationDAO notificationDAO = new NotificationDAOImpl(); 
 	private static NotificationService notificationService = new NotificationService(notificationDAO);
 	private static NotificationController notificationController= new NotificationController(notificationService);
 	
-	private static IssueDAO issueDAO = new IssueDAO(); 
+	private static IssueDAO issueDAO = new IssueDAOImpl(); 
 	private static IssueService issueService = new IssueService(issueDAO);
 	private static IssueController issueController = new IssueController(issueService);
 	
-	private static ClosedAccountsDAO closedAccountsDAO = new ClosedAccountsDAO(); 
-	private static ClosedAccountsService closedAccountsService = new ClosedAccountsService(closedAccountsDAO);
-	private static ClosedAccountsController closedAccountsController = new ClosedAccountsController(closedAccountsService);
-	
-	private static AccountDetailsDAO accountDetailsDAO = new AccountDetailsDAO();
+	private static AccountDetailsDAO accountDetailsDAO = new AccountDetailsDAOImpl();
 	private static AccountDetailsService accountDetailsService = new AccountDetailsService(accountDetailsDAO);
 	private static Logger logger = LoggingUtil.getLogger(Menu.class);
 	

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.wg.banking.constants.StringConstants;
 import com.wg.banking.dao.AccountDAO;
 import com.wg.banking.dao.IssueDAO;
+import com.wg.banking.dao.impl.AccountDAOImpl;
 import com.wg.banking.helper.LoggingUtil;
 import com.wg.banking.model.Account;
 import com.wg.banking.model.Branch;
@@ -24,7 +25,7 @@ public class IssueService {
 
 	public IssueService(IssueDAO issueDAO) {
 		this.issueDAO = issueDAO;
-		accountDAO = new AccountDAO();
+		accountDAO = new AccountDAOImpl();
 		accountService = new AccountService(accountDAO);
 	}
  

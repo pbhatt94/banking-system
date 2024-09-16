@@ -8,6 +8,8 @@ import com.wg.banking.constants.UserConstants;
 import com.wg.banking.dao.AccountDAO;
 import com.wg.banking.dao.BranchDAO;
 import com.wg.banking.dao.UserDAO;
+import com.wg.banking.dao.impl.UserDAOImpl;
+import com.wg.banking.dao.impl.AccountDAOImpl;
 import com.wg.banking.helper.LoggingUtil;
 import com.wg.banking.model.Account;
 import com.wg.banking.model.Branch;
@@ -24,9 +26,9 @@ public class BranchService {
 
 	public BranchService(BranchDAO branchDAO) {
 		this.branchDAO = branchDAO;
-		userDAO = new UserDAO();
+		userDAO = new UserDAOImpl();
 		userService = new UserService(userDAO);
-		accountDAO = new AccountDAO();
+		accountDAO = new AccountDAOImpl();
 		accountService = new AccountService(accountDAO);
 	}
 

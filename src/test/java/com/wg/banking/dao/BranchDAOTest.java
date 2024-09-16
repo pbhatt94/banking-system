@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.wg.banking.constants.BranchConstants;
+import com.wg.banking.dao.impl.BranchDAOImpl;
 import com.wg.banking.model.Branch;
 
 public class BranchDAOTest {
@@ -34,7 +35,7 @@ public class BranchDAOTest {
     private final java.sql.Date updatedAt = new java.sql.Date(System.currentTimeMillis());
 
     @InjectMocks
-    private BranchDAO branchDAO;
+    private BranchDAOImpl branchDAO;
 
     @Mock
     private Connection connection;

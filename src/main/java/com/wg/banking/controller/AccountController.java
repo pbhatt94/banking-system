@@ -1,17 +1,16 @@
 package com.wg.banking.controller;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import com.wg.banking.constants.AccountConstants;
 import com.wg.banking.constants.StringConstants;
 import com.wg.banking.dao.BranchDAO;
 import com.wg.banking.dao.UserDAO;
+import com.wg.banking.dao.impl.UserDAOImpl;
+import com.wg.banking.dao.impl.BranchDAOImpl;
 import com.wg.banking.helper.GetUserInput;
-import com.wg.banking.helper.printer.AccountDetailsPrinter;
 import com.wg.banking.helper.printer.UserPrinter;
 import com.wg.banking.model.Account;
 import com.wg.banking.model.Branch;
@@ -33,9 +32,9 @@ public class AccountController {
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
         this.scanner = new Scanner(System.in); 
-        userDAO = new UserDAO();
+        userDAO = new UserDAOImpl();
         userService = new UserService(userDAO);
-        branchDAO = new BranchDAO();
+        branchDAO = new BranchDAOImpl();
         branchService = new BranchService(branchDAO);
     }
 
@@ -73,12 +72,14 @@ public class AccountController {
     	return accounts;
     }
     
-    public void getAllAccounts(String branchId) {
+    public List<Account> getAllAccounts(String branchId) {
     	try {
             List<Account> accounts = accountService.getAllAccounts(branchId);
+            return accounts;
         } catch (Exception e) {
             System.out.println(StringConstants.ERROR_RETRIEVING_ACCOUNT + e.getMessage());
         }
+    	return null;
     }
 
     public void updateAccount() {

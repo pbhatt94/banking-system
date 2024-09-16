@@ -18,8 +18,13 @@ import com.wg.banking.controller.UserController;
 import com.wg.banking.dao.AccountDAO;
 import com.wg.banking.dao.IssueDAO;
 import com.wg.banking.dao.NotificationDAO;
+import com.wg.banking.dao.impl.AccountDAOImpl;
+import com.wg.banking.dao.impl.IssueDAOImpl;
+import com.wg.banking.dao.impl.NotificationDAOImpl;
+import com.wg.banking.dao.impl.TransactionDAOImpl;
 import com.wg.banking.dao.TransactionDAO;
 import com.wg.banking.dao.UserDAO;
+import com.wg.banking.dao.impl.UserDAOImpl;
 import com.wg.banking.helper.GetUserInput;
 import com.wg.banking.helper.LoggingUtil;
 import com.wg.banking.helper.UniqueIdGenerator;
@@ -37,23 +42,23 @@ import com.wg.banking.service.UserService;
 
 public class CustomerMenu {
 
-	private static UserDAO userDAO = new UserDAO();
+	private static UserDAO userDAO = new UserDAOImpl();
 	private static UserService userService = new UserService(userDAO);
 	private static UserController userController= new UserController(userService); 
 	
-	private static AccountDAO accountDAO = new AccountDAO(); 
+	private static AccountDAO accountDAO = new AccountDAOImpl(); 
 	private static AccountService accountService = new AccountService(accountDAO);
 	private static AccountController accountController= new AccountController(accountService);
 	
-	private static TransactionDAO transactionDAO = new TransactionDAO(); 
+	private static TransactionDAO transactionDAO = new TransactionDAOImpl(); 
 	private static TransactionService transactionService = new TransactionService(transactionDAO);
 	private static TransactionController transactionController= new TransactionController(transactionService);
 	
-	private static NotificationDAO notificationDAO = new NotificationDAO(); 
+	private static NotificationDAO notificationDAO = new NotificationDAOImpl(); 
 	private static NotificationService notificationService = new NotificationService(notificationDAO);
 	private static NotificationController notificationController= new NotificationController(notificationService);
 	
-	private static IssueDAO issueDAO = new IssueDAO(); 
+	private static IssueDAO issueDAO = new IssueDAOImpl(); 
 	private static IssueService issueService = new IssueService(issueDAO);
 	private static IssueController issueController = new IssueController(issueService); 
 	
@@ -88,7 +93,7 @@ public class CustomerMenu {
                     break;
                 case 6:
                     User userProfile = userController.getUserById(user.getUserId());
-                    UserPrinter.printUsers(List.of(userProfile));
+                    UserPrinter.printUsers(List.of(userProfile)); 
                     break;
                 case 7:
                     userController.updateUser(user.getUserId()); 

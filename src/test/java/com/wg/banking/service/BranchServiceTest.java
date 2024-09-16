@@ -17,7 +17,7 @@ import com.wg.banking.model.Branch;
 import com.wg.banking.model.User;
 
 public class BranchServiceTest {
-	@Mock
+	@Mock 
 	private BranchDAO branchDAO;
 
 	@Mock

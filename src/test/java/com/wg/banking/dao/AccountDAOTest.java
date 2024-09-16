@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.wg.banking.constants.AccountConstants;
+import com.wg.banking.dao.impl.AccountDAOImpl;
 import com.wg.banking.model.Account;
 import com.wg.banking.model.User;
 
@@ -28,7 +29,7 @@ public class AccountDAOTest {
     private final java.sql.Date updatedAt = new java.sql.Date(System.currentTimeMillis());
 
     @InjectMocks
-    private AccountDAO accountDAO;
+    private AccountDAOImpl accountDAO;
 
     @Mock
     private Connection connection;

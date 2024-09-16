@@ -2,9 +2,6 @@ package com.wg.banking.presentation;
 
 import java.util.Scanner;
 
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-
 import com.wg.banking.constants.StringConstants;
 import com.wg.banking.controller.LoginController;
 
