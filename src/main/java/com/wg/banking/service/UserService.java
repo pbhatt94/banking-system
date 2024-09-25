@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import com.wg.banking.dao.UserDAO;
+import com.wg.banking.dao.impl.ClosedAccountsDAOImpl;
 import com.wg.banking.constants.StringConstants;
 import com.wg.banking.constants.UserConstants;
 import com.wg.banking.dao.ClosedAccountsDAO;
@@ -24,9 +25,9 @@ public class UserService {
 
 	public UserService(UserDAO userDAO) {
 		this.userDAO = userDAO;
-		closedAccountsDAO = new ClosedAccountsDAO();
+		closedAccountsDAO = new ClosedAccountsDAOImpl();
 		closedAccountsService = new ClosedAccountsService(closedAccountsDAO);
-	}
+	} 
 
 	public UserService(UserDAO userDAO, ClosedAccountsService closedAccountsService) {
 		this.userDAO = userDAO;

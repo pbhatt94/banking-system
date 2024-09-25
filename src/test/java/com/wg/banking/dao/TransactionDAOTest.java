@@ -26,166 +26,176 @@ import com.wg.banking.dao.impl.TransactionDAOImpl;
 import com.wg.banking.model.Transaction;
 
 public class TransactionDAOTest {
-    private final String transactionId = "txn123";
-    private final double amount = 500.0;
-    private final String sourceAccountId = "acc123";
-    private final String destinationAccountId = "acc456";
-    private final String transactionType = "DEPOSIT";
-    private final String createdAt = "2024-09-10 12:00:00";
+	private final String transactionId = "txn123";
+	private final double amount = 500.0;
+	private final String sourceAccountId = "acc123";
+	private final String destinationAccountId = "acc456";
+	private final String transactionType = "DEPOSIT";
+	private final String createdAt = "2024-09-10 12:00:00";
 
-    @InjectMocks
-    private TransactionDAOImpl transactionDAO;
+	@InjectMocks
+	private TransactionDAOImpl transactionDAO;
 
-    @Mock
-    private Connection connection;
+	@Mock
+	private Connection connection;
 
-    @Mock
-    private PreparedStatement preparedStatement;
+	@Mock
+	private PreparedStatement preparedStatement;
 
-    @Mock
-    private ResultSet resultSet;
+	@Mock
+	private ResultSet resultSet;
 
-    @BeforeEach
-    public void setUp() throws SQLException {
-        MockitoAnnotations.openMocks(this);
-        when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-    }
+	@BeforeEach
+	public void setUp() throws SQLException {
+		MockitoAnnotations.openMocks(this);
+		when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+	}
 
-    @Test
-    public void testAddTransactionSuccess_Withdrawal() throws SQLException, ClassNotFoundException {
-        Transaction transaction = getTransactionObj();
-        transaction.setTransactionType(Transaction.TransactionType.valueOf("WITHDRAWAL"));
+	@Test
+	public void testAddTransactionSuccess_Withdrawal() throws SQLException, ClassNotFoundException {
+		Transaction transaction = getTransactionObj();
+		transaction.setTransactionType(Transaction.TransactionType.valueOf("WITHDRAWAL"));
 
-        when(preparedStatement.executeUpdate()).thenReturn(1);
+		when(preparedStatement.executeUpdate()).thenReturn(1);
 
-        boolean result = transactionDAO.addTransaction(transaction);
+		boolean result = transactionDAO.addTransaction(transaction);
 
-        assertTrue(result);
-        verify(preparedStatement).executeUpdate();
-    }
-    
-    @Test
-    public void testAddTransactionSuccess_Deposit() throws SQLException, ClassNotFoundException {
-    	Transaction transaction = getTransactionObj();
-        transaction.setTransactionType(Transaction.TransactionType.valueOf("DEPOSIT"));
-    	
-    	when(preparedStatement.executeUpdate()).thenReturn(1);
-    	
-    	boolean result = transactionDAO.addTransaction(transaction);
-    	
-    	assertTrue(result);
-    	verify(preparedStatement).executeUpdate();
-    }
-    
-    @Test
-    public void testAddTransactionSuccess_Transfer() throws SQLException, ClassNotFoundException {
-    	Transaction transaction = getTransactionObj();
-        transaction.setTransactionType(Transaction.TransactionType.valueOf("TRANSFER"));
-    	
-    	when(preparedStatement.executeUpdate()).thenReturn(1);
-    	
-    	boolean result = transactionDAO.addTransaction(transaction);
-    	
-    	assertTrue(result);
-    	verify(preparedStatement).executeUpdate();
-    }
+		assertTrue(result);
+		verify(preparedStatement).executeUpdate();
+	}
 
-    @Test
-    public void testGetTransactionById() throws SQLException, ClassNotFoundException {
-        Transaction transaction = getTransactionObj();
+	@Test
+	public void testAddTransactionSuccess_Deposit() throws SQLException, ClassNotFoundException {
+		Transaction transaction = getTransactionObj();
+		transaction.setTransactionType(Transaction.TransactionType.valueOf("DEPOSIT"));
 
-        when(resultSet.next()).thenReturn(true).thenReturn(false); // Simulate one result
-        when(resultSet.getString(TransactionConstants.TRANSACTION_ID_COLUMN)).thenReturn(transactionId);
-        when(resultSet.getDouble(TransactionConstants.AMOUNT_COLUMN)).thenReturn(amount);
-        when(resultSet.getString(TransactionConstants.TRANSACTION_TYPE_COLUMN)).thenReturn(transactionType);
-        when(resultSet.getString(TransactionConstants.SOURCE_ACCOUNT_ID_COLUMN)).thenReturn(sourceAccountId);
-        when(resultSet.getString(TransactionConstants.DESTINATION_ACCOUNT_ID_COLUMN)).thenReturn(destinationAccountId);
-        when(resultSet.getTimestamp(TransactionConstants.CREATED_AT_COLUMN)).thenReturn(Timestamp.valueOf(createdAt));
+		when(preparedStatement.executeUpdate()).thenReturn(1);
 
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+		boolean result = transactionDAO.addTransaction(transaction);
 
-        Transaction result = transactionDAO.getTransactionById(transactionId);
+		assertTrue(result);
+		verify(preparedStatement).executeUpdate();
+	}
 
-        assertNotNull(result);
-        assertEquals(transaction, result);
-    }
- 
-    @Test
-    public void testGetAllTransactions() throws SQLException, ClassNotFoundException {
-        Transaction transaction1 = getTransactionObj();
-        Transaction transaction2 = new Transaction();
-        transaction2.setTransactionId("txn124");
-        transaction2.setAmount(300.0);
-        transaction2.setTransactionType(Transaction.TransactionType.WITHDRAWAL);
-        transaction2.setSourceAccountId("acc789");
-        transaction2.setDestinationAccountId(null);
-        transaction2.setCreatedAt(Timestamp.valueOf("2024-09-10 13:00:00"));
+	@Test
+	public void testAddTransactionSuccess_Transfer() throws SQLException, ClassNotFoundException {
+		Transaction transaction = getTransactionObj();
+		transaction.setTransactionType(Transaction.TransactionType.valueOf("TRANSFER"));
 
-        List<Transaction> transactionList = new ArrayList<>();
-        transactionList.add(transaction1); 
-        transactionList.add(transaction2);
+		when(preparedStatement.executeUpdate()).thenReturn(1);
 
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
+		boolean result = transactionDAO.addTransaction(transaction);
 
-        when(resultSet.getString(TransactionConstants.TRANSACTION_ID_COLUMN)).thenReturn(transactionId).thenReturn("txn124").thenReturn(null);
-        when(resultSet.getDouble(TransactionConstants.AMOUNT_COLUMN)).thenReturn(amount).thenReturn(300.0);
-        when(resultSet.getString(TransactionConstants.TRANSACTION_TYPE_COLUMN)).thenReturn(transactionType).thenReturn("WITHDRAWAL");
-        when(resultSet.getString(TransactionConstants.SOURCE_ACCOUNT_ID_COLUMN)).thenReturn(sourceAccountId).thenReturn("acc789");
-        when(resultSet.getString(TransactionConstants.DESTINATION_ACCOUNT_ID_COLUMN)).thenReturn(destinationAccountId).thenReturn(null);
-        when(resultSet.getTimestamp(TransactionConstants.CREATED_AT_COLUMN)).thenReturn(Timestamp.valueOf(createdAt)).thenReturn(Timestamp.valueOf("2024-09-10 13:00:00"));
+		assertTrue(result);
+		verify(preparedStatement).executeUpdate();
+	}
 
-        List<Transaction> result = transactionDAO.getAllTransactions();
+	@Test
+	public void testGetTransactionById() throws SQLException, ClassNotFoundException {
+		Transaction transaction = getTransactionObj();
 
-        assertNotNull(result);
-        assertEquals(2, result.size());
-        assertEquals(transaction1, result.get(0));
-        assertEquals(transaction2, result.get(1));
-    }
+		when(resultSet.next()).thenReturn(true).thenReturn(false); // Simulate one result
+		when(resultSet.getString(TransactionConstants.TRANSACTION_ID_COLUMN)).thenReturn(transactionId);
+		when(resultSet.getDouble(TransactionConstants.AMOUNT_COLUMN)).thenReturn(amount);
+		when(resultSet.getString(TransactionConstants.TRANSACTION_TYPE_COLUMN)).thenReturn(transactionType);
+		when(resultSet.getString(TransactionConstants.SOURCE_ACCOUNT_ID_COLUMN)).thenReturn(sourceAccountId);
+		when(resultSet.getString(TransactionConstants.DESTINATION_ACCOUNT_ID_COLUMN)).thenReturn(destinationAccountId);
+		when(resultSet.getTimestamp(TransactionConstants.CREATED_AT_COLUMN)).thenReturn(Timestamp.valueOf(createdAt));
 
-    @Test
-    public void testGetAllTransactionsByAccount() throws SQLException, ClassNotFoundException {
-        Transaction transaction1 = getTransactionObj();
-        Transaction transaction2 = new Transaction();
-        transaction2.setTransactionId("txn124");
-        transaction2.setAmount(300.0);
-        transaction2.setTransactionType(Transaction.TransactionType.WITHDRAWAL);
-        transaction2.setSourceAccountId("acc789");
-        transaction2.setDestinationAccountId(null);
-        transaction2.setCreatedAt(Timestamp.valueOf("2024-09-10 13:00:00"));
+		when(preparedStatement.executeQuery()).thenReturn(resultSet);
 
-        List<Transaction> transactionList = new ArrayList<>();
-        transactionList.add(transaction1);
-        transactionList.add(transaction2);
+		Transaction result = transactionDAO.getTransactionById(transactionId);
 
-        String accountNo = "acc123";
+		assertNotNull(result);
+		assertEquals(transaction, result);
+	}
 
-        when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
+	@Test
+	public void testGetAllTransactions() throws SQLException, ClassNotFoundException {
+		Transaction transaction1 = getTransactionObj();
+		Transaction transaction2 = new Transaction();
+		transaction2.setTransactionId("txn124");
+		transaction2.setAmount(300.0);
+		transaction2.setTransactionType(Transaction.TransactionType.WITHDRAWAL);
+		transaction2.setSourceAccountId("acc789");
+		transaction2.setDestinationAccountId(null);
+		transaction2.setCreatedAt(Timestamp.valueOf("2024-09-10 13:00:00"));
 
-        when(resultSet.getString(TransactionConstants.TRANSACTION_ID_COLUMN)).thenReturn(transactionId).thenReturn("txn124").thenReturn(null);
-        when(resultSet.getDouble(TransactionConstants.AMOUNT_COLUMN)).thenReturn(amount).thenReturn(300.0);
-        when(resultSet.getString(TransactionConstants.TRANSACTION_TYPE_COLUMN)).thenReturn(transactionType).thenReturn("WITHDRAWAL");
-        when(resultSet.getString(TransactionConstants.SOURCE_ACCOUNT_ID_COLUMN)).thenReturn(sourceAccountId).thenReturn("acc789");
-        when(resultSet.getString(TransactionConstants.DESTINATION_ACCOUNT_ID_COLUMN)).thenReturn(destinationAccountId).thenReturn(null);
-        when(resultSet.getTimestamp(TransactionConstants.CREATED_AT_COLUMN)).thenReturn(Timestamp.valueOf(createdAt)).thenReturn(Timestamp.valueOf("2024-09-10 13:00:00"));
+		List<Transaction> transactionList = new ArrayList<>();
+		transactionList.add(transaction1);
+		transactionList.add(transaction2);
 
-        List<Transaction> result = transactionDAO.getAllTransactions(accountNo);
+		when(preparedStatement.executeQuery()).thenReturn(resultSet);
+		when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
 
-        assertNotNull(result);
-        assertEquals(2, result.size());
-        assertEquals(transaction1, result.get(0));
-        assertEquals(transaction2, result.get(1));
-    }
+		when(resultSet.getString(TransactionConstants.TRANSACTION_ID_COLUMN)).thenReturn(transactionId)
+				.thenReturn("txn124").thenReturn(null);
+		when(resultSet.getDouble(TransactionConstants.AMOUNT_COLUMN)).thenReturn(amount).thenReturn(300.0);
+		when(resultSet.getString(TransactionConstants.TRANSACTION_TYPE_COLUMN)).thenReturn(transactionType)
+				.thenReturn("WITHDRAWAL");
+		when(resultSet.getString(TransactionConstants.SOURCE_ACCOUNT_ID_COLUMN)).thenReturn(sourceAccountId)
+				.thenReturn("acc789");
+		when(resultSet.getString(TransactionConstants.DESTINATION_ACCOUNT_ID_COLUMN)).thenReturn(destinationAccountId)
+				.thenReturn(null);
+		when(resultSet.getTimestamp(TransactionConstants.CREATED_AT_COLUMN)).thenReturn(Timestamp.valueOf(createdAt))
+				.thenReturn(Timestamp.valueOf("2024-09-10 13:00:00"));
 
-    private Transaction getTransactionObj() {
-        Transaction transaction = new Transaction();
-        transaction.setTransactionId(transactionId);
-        transaction.setAmount(amount);
-        transaction.setTransactionType(Transaction.TransactionType.valueOf(transactionType));
-        transaction.setSourceAccountId(sourceAccountId);
-        transaction.setDestinationAccountId(destinationAccountId);
-        transaction.setCreatedAt(Timestamp.valueOf(createdAt));
-        return transaction;
-    }
+		List<Transaction> result = transactionDAO.getAllTransactions();
+
+		assertNotNull(result);
+		assertEquals(2, result.size());
+		assertEquals(transaction1, result.get(0));
+		assertEquals(transaction2, result.get(1));
+	}
+
+	@Test
+	public void testGetAllTransactionsByAccount() throws SQLException, ClassNotFoundException {
+		Transaction transaction1 = getTransactionObj();
+		Transaction transaction2 = new Transaction();
+		transaction2.setTransactionId("txn124");
+		transaction2.setAmount(300.0);
+		transaction2.setTransactionType(Transaction.TransactionType.WITHDRAWAL);
+		transaction2.setSourceAccountId("acc789");
+		transaction2.setDestinationAccountId(null);
+		transaction2.setCreatedAt(Timestamp.valueOf("2024-09-10 13:00:00"));
+
+		List<Transaction> transactionList = new ArrayList<>();
+		transactionList.add(transaction1);
+		transactionList.add(transaction2);
+
+		String accountNo = "acc123";
+
+		when(preparedStatement.executeQuery()).thenReturn(resultSet);
+		when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
+
+		when(resultSet.getString(TransactionConstants.TRANSACTION_ID_COLUMN)).thenReturn(transactionId)
+				.thenReturn("txn124").thenReturn(null);
+		when(resultSet.getDouble(TransactionConstants.AMOUNT_COLUMN)).thenReturn(amount).thenReturn(300.0);
+		when(resultSet.getString(TransactionConstants.TRANSACTION_TYPE_COLUMN)).thenReturn(transactionType)
+				.thenReturn("WITHDRAWAL");
+		when(resultSet.getString(TransactionConstants.SOURCE_ACCOUNT_ID_COLUMN)).thenReturn(sourceAccountId)
+				.thenReturn("acc789");
+		when(resultSet.getString(TransactionConstants.DESTINATION_ACCOUNT_ID_COLUMN)).thenReturn(destinationAccountId)
+				.thenReturn(null);
+		when(resultSet.getTimestamp(TransactionConstants.CREATED_AT_COLUMN)).thenReturn(Timestamp.valueOf(createdAt))
+				.thenReturn(Timestamp.valueOf("2024-09-10 13:00:00"));
+
+		List<Transaction> result = transactionDAO.getAllTransactions(accountNo);
+
+		assertNotNull(result);
+		assertEquals(2, result.size());
+		assertEquals(transaction1, result.get(0));
+		assertEquals(transaction2, result.get(1));
+	}
+
+	private Transaction getTransactionObj() {
+		Transaction transaction = new Transaction();
+		transaction.setTransactionId(transactionId);
+		transaction.setAmount(amount);
+		transaction.setTransactionType(Transaction.TransactionType.valueOf(transactionType));
+		transaction.setSourceAccountId(sourceAccountId);
+		transaction.setDestinationAccountId(destinationAccountId);
+		transaction.setCreatedAt(Timestamp.valueOf(createdAt));
+		return transaction;
+	}
 }

@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import com.wg.banking.dao.NotificationDAO;
-import com.wg.banking.dao.impl.NotificationDAOImpl;
 import com.wg.banking.helper.LoggingUtil;
 import com.wg.banking.model.Account;
 import com.wg.banking.model.Branch;
@@ -29,15 +28,10 @@ public class NotificationService {
 
     public NotificationService(NotificationDAO notificationDAO) {
         this.notificationDAO = notificationDAO;
-//        userDAO = new UserDAO();
-//        userService = new UserService(userDAO); 
-//        accountDAO = new AccountDAO();
-//        accountService = new AccountService(accountDAO); 
-//        branchDAO = new BranchDAO();
-//        branchService = new BranchService(branchDAO);
     }
     
-    public NotificationService(NotificationDAO notificationDAO, UserService userService, BranchService branchService, AccountService accountService) {
+	public NotificationService(NotificationDAO notificationDAO, UserService userService,
+			BranchService branchService, AccountService accountService) {
     	this.notificationDAO = notificationDAO;
           this.userService = userService;
           this.accountService = accountService;

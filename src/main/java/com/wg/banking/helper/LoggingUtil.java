@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class LoggingUtil {
-    private static final String LOG_FILE_NAME = "C:\\Users\\pbhatt\\OneDrive - WatchGuard Technologies Inc\\Documents\\project\\banking_system2\\logs\\app.log";
+    private static final String LOG_FILE_NAME = "C:\\Users\\pbhatt\\OneDrive - WatchGuard Technologies Inc\\Documents\\project\\banking-system\\logs\\app.log";
     private static final Logger logger = Logger.getLogger(LoggingUtil.class.getName());
 
     static {

@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import com.wg.banking.config.AppConfig;
 import com.wg.banking.constants.AccountConstants;
 import com.wg.banking.constants.NotificationConstants;
 import com.wg.banking.constants.StringConstants;
@@ -22,21 +23,8 @@ import com.wg.banking.controller.IssueController;
 import com.wg.banking.controller.NotificationController;
 import com.wg.banking.controller.TransactionController;
 import com.wg.banking.controller.UserController;
-import com.wg.banking.dao.AccountDAO;
 import com.wg.banking.dao.AccountDetailsDAO;
-import com.wg.banking.dao.BranchDAO;
-import com.wg.banking.dao.ClosedAccountsDAO;
-import com.wg.banking.dao.IssueDAO;
-import com.wg.banking.dao.NotificationDAO;
-import com.wg.banking.dao.impl.AccountDAOImpl;
 import com.wg.banking.dao.impl.AccountDetailsDAOImpl;
-import com.wg.banking.dao.impl.BranchDAOImpl;
-import com.wg.banking.dao.impl.IssueDAOImpl;
-import com.wg.banking.dao.impl.NotificationDAOImpl;
-import com.wg.banking.dao.impl.TransactionDAOImpl;
-import com.wg.banking.dao.TransactionDAO;
-import com.wg.banking.dao.UserDAO;
-import com.wg.banking.dao.impl.UserDAOImpl;
 import com.wg.banking.helper.AccountNumberGenerator;
 import com.wg.banking.helper.GetUserInput;
 import com.wg.banking.helper.LoggingUtil;
@@ -58,49 +46,25 @@ import com.wg.banking.model.NotificationDetails;
 import com.wg.banking.model.Transaction;
 import com.wg.banking.model.User;
 import com.wg.banking.service.AccountDetailsService;
-import com.wg.banking.service.AccountService;
-import com.wg.banking.service.BranchService;
-import com.wg.banking.service.ClosedAccountsService;
-import com.wg.banking.service.IssueService;
-import com.wg.banking.service.NotificationService;
-import com.wg.banking.service.TransactionService;
-import com.wg.banking.service.UserService;
+ 
+public class AdminMenu { 
 
-public class AdminMenu {
+	private static UserController userController = AppConfig.getUserController();
 
-	private static UserDAO userDAO = new UserDAOImpl();
-	private static UserService userService = new UserService(userDAO);
-	private static UserController userController = new UserController(userService);
+	private static BranchController branchController = AppConfig.getBranchController();
 
-	private static BranchDAO branchDAO = new BranchDAOImpl();
-	private static BranchService branchService = new BranchService(branchDAO);
-	private static BranchController branchController = new BranchController(branchService);
+	private static AccountController accountController = AppConfig.getAccountController();
 
-	private static AccountDAO accountDAO = new AccountDAOImpl();
-	private static AccountService accountService = new AccountService(accountDAO);
-	private static AccountController accountController = new AccountController(accountService);
+	private static TransactionController transactionController = AppConfig.getTransactionController();
 
-	private static TransactionDAO transactionDAO = new TransactionDAOImpl();
-	private static TransactionService transactionService = new TransactionService(transactionDAO);
-	private static TransactionController transactionController = new TransactionController(transactionService);
+	private static IssueController issueController = AppConfig.getIssueController();
 
-	private static IssueDAO issueDAO = new IssueDAOImpl();
-	private static IssueService issueService = new IssueService(issueDAO);
-	private static IssueController issueController = new IssueController(issueService);
-
-	private static ClosedAccountsDAO closedAccountsDAO = new ClosedAccountsDAO();
-	private static ClosedAccountsService closedAccountsService = new ClosedAccountsService(closedAccountsDAO);
-	private static ClosedAccountsController closedAccountsController = new ClosedAccountsController(
-			closedAccountsService);
+	private static ClosedAccountsController closedAccountsController = AppConfig.getClosedAccountsController();
 
 	private static AccountDetailsDAO accountDetailsDAO = new AccountDetailsDAOImpl();
 	private static AccountDetailsService accountDetailsService = new AccountDetailsService(accountDetailsDAO);
 
-	private static NotificationDAO notificationDAO = new NotificationDAOImpl();
-	private static NotificationService notificationService = new NotificationService(notificationDAO, userService,
-			branchService, accountService);
-	private static NotificationController notificationController = new NotificationController(notificationService);
-//	private static TransactionService transactionService2 = new TransactionService(transactionDAO, accountService, notificationService); 
+	private static NotificationController notificationController = AppConfig.getNotificationController();
 	private static Logger logger = LoggingUtil.getLogger(Menu.class);
 
 	private static Scanner scanner = new Scanner(System.in);
@@ -757,7 +721,7 @@ public class AdminMenu {
 		}
 
 		String accountNo = accounts.get(index - 1).getAccountNo();
-		String userId = accountController.getUser(accountNo).getOwnerId();
+		String userId = accountController.getAccountById(accountNo).getOwnerId();
 		User user = userController.getUserById(userId);
 
 		String closedAccountId = UniqueIdGenerator.generateUniqueId();

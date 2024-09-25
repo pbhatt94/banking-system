@@ -102,7 +102,7 @@ public class AccountService {
 		return null;
 	}
 
-	public Account getUser(String accountNumber) {
+	public Account getAccountById(String accountNumber) {
 		try {
 			return accountDAO.getUser(accountNumber);
 		} catch (ClassNotFoundException | SQLException e) {

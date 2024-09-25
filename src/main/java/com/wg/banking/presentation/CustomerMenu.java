@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.wg.banking.config.AppConfig;
 import com.wg.banking.constants.NotificationConstants;
 import com.wg.banking.constants.StringConstants;
 import com.wg.banking.controller.AccountController;
@@ -15,16 +16,6 @@ import com.wg.banking.controller.IssueController;
 import com.wg.banking.controller.NotificationController;
 import com.wg.banking.controller.TransactionController;
 import com.wg.banking.controller.UserController;
-import com.wg.banking.dao.AccountDAO;
-import com.wg.banking.dao.IssueDAO;
-import com.wg.banking.dao.NotificationDAO;
-import com.wg.banking.dao.impl.AccountDAOImpl;
-import com.wg.banking.dao.impl.IssueDAOImpl;
-import com.wg.banking.dao.impl.NotificationDAOImpl;
-import com.wg.banking.dao.impl.TransactionDAOImpl;
-import com.wg.banking.dao.TransactionDAO;
-import com.wg.banking.dao.UserDAO;
-import com.wg.banking.dao.impl.UserDAOImpl;
 import com.wg.banking.helper.GetUserInput;
 import com.wg.banking.helper.LoggingUtil;
 import com.wg.banking.helper.UniqueIdGenerator;
@@ -34,36 +25,21 @@ import com.wg.banking.helper.printer.UserPrinter;
 import com.wg.banking.model.Issue;
 import com.wg.banking.model.Notification;
 import com.wg.banking.model.User;
-import com.wg.banking.service.AccountService;
-import com.wg.banking.service.IssueService;
-import com.wg.banking.service.NotificationService;
-import com.wg.banking.service.TransactionService;
-import com.wg.banking.service.UserService;
 
 public class CustomerMenu {
 
-	private static UserDAO userDAO = new UserDAOImpl();
-	private static UserService userService = new UserService(userDAO);
-	private static UserController userController= new UserController(userService); 
+	private static UserController userController= AppConfig.getUserController();
 	
-	private static AccountDAO accountDAO = new AccountDAOImpl(); 
-	private static AccountService accountService = new AccountService(accountDAO);
-	private static AccountController accountController= new AccountController(accountService);
+	private static AccountController accountController= AppConfig.getAccountController();
 	
-	private static TransactionDAO transactionDAO = new TransactionDAOImpl(); 
-	private static TransactionService transactionService = new TransactionService(transactionDAO);
-	private static TransactionController transactionController= new TransactionController(transactionService);
+	private static TransactionController transactionController= AppConfig.getTransactionController();
 	
-	private static NotificationDAO notificationDAO = new NotificationDAOImpl(); 
-	private static NotificationService notificationService = new NotificationService(notificationDAO);
-	private static NotificationController notificationController= new NotificationController(notificationService);
+	private static NotificationController notificationController= AppConfig.getNotificationController();
 	
-	private static IssueDAO issueDAO = new IssueDAOImpl(); 
-	private static IssueService issueService = new IssueService(issueDAO);
-	private static IssueController issueController = new IssueController(issueService); 
+	private static IssueController issueController = AppConfig.getIssueController();
 	
 	private static Logger logger = LoggingUtil.getLogger(Menu.class);
-	private static Scanner scanner = new Scanner(System.in);
+	private static Scanner scanner = new Scanner(System.in); 
 	
 	public static void showCustomerMenu(User user) {
         int choice;
@@ -182,7 +158,6 @@ public class CustomerMenu {
 		} catch (InputMismatchException e) {
 			logger.log(Level.SEVERE, "An error occurred: ", e);
 			e.printStackTrace();
-//			scanner.next();
 		} catch(Exception e) {
 			logger.log(Level.SEVERE, "An error occurred: ", e);
 			e.printStackTrace();

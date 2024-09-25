@@ -1,6 +1,5 @@
 package com.wg.banking.helper.printer;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import com.wg.banking.helper.MaskString;

@@ -17,7 +17,10 @@ public class DatabaseConnection {
 //            }
 //        }
 		Class.forName("com.mysql.cj.jdbc.Driver");		
-    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bank","root","mysql");
+    	String URL = "jdbc:mysql://localhost:3306/bank";
+		String USERNAME = "root";
+		String PASSWORD = "mysql";
+		connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
         return connection;
 	}
 }

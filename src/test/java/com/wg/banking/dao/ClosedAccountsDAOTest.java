@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.wg.banking.constants.ClosedAccountsConstants;
+import com.wg.banking.dao.impl.ClosedAccountsDAOImpl;
 import com.wg.banking.model.ClosedAccounts;
 
 public class ClosedAccountsDAOTest {
@@ -30,7 +31,7 @@ public class ClosedAccountsDAOTest {
     private final java.sql.Timestamp closedAt = new java.sql.Timestamp(System.currentTimeMillis());
 
     @InjectMocks
-    private ClosedAccountsDAO closedAccountsDAO;
+    private ClosedAccountsDAOImpl closedAccountsDAO;
 
     @Mock
     private Connection connection;
@@ -61,12 +62,12 @@ public class ClosedAccountsDAOTest {
 
     @Test
     public void testAddClosedAccountsFailure() throws SQLException, ClassNotFoundException {
-        ClosedAccounts closedAccount = getClosedAccountObj();
+        ClosedAccounts closedAccount = getClosedAccountObj(); 
 
         when(preparedStatement.executeUpdate()).thenThrow(new SQLException("Database error"));
 
         assertThrows(SQLException.class, () -> closedAccountsDAO.addClosedAccounts(closedAccount));
-    }
+    } 
 
     @Test
     public void testGetClosedAccount() throws SQLException, ClassNotFoundException {

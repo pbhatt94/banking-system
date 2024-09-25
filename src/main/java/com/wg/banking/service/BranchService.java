@@ -27,7 +27,7 @@ public class BranchService {
 	public BranchService(BranchDAO branchDAO) {
 		this.branchDAO = branchDAO;
 		userDAO = new UserDAOImpl();
-		userService = new UserService(userDAO);
+		userService = new UserService(userDAO); 
 		accountDAO = new AccountDAOImpl();
 		accountService = new AccountService(accountDAO);
 	}

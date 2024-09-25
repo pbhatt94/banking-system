@@ -3,7 +3,6 @@ package com.wg.banking.helper.printer;
 import java.util.List;
 
 import com.wg.banking.model.Branch;
-import com.wg.banking.model.Issue;
 
 public class BranchPrinter {
  

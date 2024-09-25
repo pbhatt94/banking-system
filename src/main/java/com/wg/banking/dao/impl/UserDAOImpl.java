@@ -81,6 +81,11 @@ public class UserDAOImpl extends GenericDAO<User> implements UserDAO {
 
 		return getAll(query);
 	}
+	
+	public User authenticateUser(String username, String password) throws ClassNotFoundException, SQLException {
+		String sqlQuery = "SELECT * FROM User WHERE username=" + "\"" + username + "\"";
+		return get(sqlQuery); 
+	}
 
 	@Override
 	protected User mapResultSetToEntity(ResultSet resultSet) throws SQLException {

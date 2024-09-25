@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class TransactionController {
     private static final String ERROR_RETRIEVING_TRANSACTIONS = "Error retrieving transactions: ";

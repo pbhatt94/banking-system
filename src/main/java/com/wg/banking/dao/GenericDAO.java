@@ -18,7 +18,7 @@ public abstract class GenericDAO<T> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	} 
 
     protected abstract T mapResultSetToEntity(ResultSet resultSet) throws SQLException;
 

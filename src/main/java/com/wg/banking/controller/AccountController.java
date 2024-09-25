@@ -32,7 +32,7 @@ public class AccountController {
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
         this.scanner = new Scanner(System.in); 
-        userDAO = new UserDAOImpl();
+        userDAO = new UserDAOImpl(); 
         userService = new UserService(userDAO);
         branchDAO = new BranchDAOImpl();
         branchService = new BranchService(branchDAO);
@@ -188,7 +188,7 @@ public class AccountController {
     }  
     
     
-    public Account getUser(String accountNumber) {
-    	return accountService.getUser(accountNumber);
+    public Account getAccountById(String accountNumber) {
+    	return accountService.getAccountById(accountNumber);
     }
 }

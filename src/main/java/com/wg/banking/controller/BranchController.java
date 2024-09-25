@@ -31,7 +31,7 @@ public class BranchController {
 
     public void addBranch(Branch branch) {
         branchService.addBranch(branch);
-    }
+    } 
  
     public void getBranchById() {
     	try {
@@ -178,7 +178,7 @@ public class BranchController {
         }
     }
     
-    public Branch getBranch(User user) {
+    public Branch getBranchByManagerId(User user) {
     	return branchService.getBranchByManagerId(user);
     }
 }

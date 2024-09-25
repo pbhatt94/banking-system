@@ -79,11 +79,12 @@ public class TransactionServiceTest {
 		when(accountService.getAccount(accountNo)).thenReturn(account);
 		when(accountService.updateAccount(any(Account.class))).thenReturn(true);
 		when(transactionDAO.addTransaction(any(Transaction.class))).thenReturn(true);
-		when(accountService.getUser(any(String.class))).thenReturn(account);
+		when(accountService.getAccountById(any(String.class))).thenReturn(account);
 
 		transactionService.handleWithdrawal(transaction);
 
-		assertEquals(1900.0, account.getBalance());
+		double expectedBalance = 1900.0;
+		assertEquals(expectedBalance, account.getBalance());
 		verify(accountService).updateAccount(account);
 		verify(transactionDAO).addTransaction(transaction);
 		verify(notificationService).addNotification(any(Notification.class));
@@ -101,7 +102,7 @@ public class TransactionServiceTest {
 		transaction.setAmount(amount);
 		transaction.setSourceAccountId(accountNo);
 
-		// Act & Assert 
+		// Act & Assert
 		verify(accountService, never()).updateAccount(any(Account.class));
 		verify(transactionDAO, never()).addTransaction(any(Transaction.class));
 		verify(notificationService, never()).addNotification(any(Notification.class));
@@ -124,7 +125,7 @@ public class TransactionServiceTest {
 		when(accountService.getAccount(accountNo)).thenReturn(account);
 		when(accountService.updateAccount(any(Account.class))).thenReturn(true);
 		when(transactionDAO.addTransaction(any(Transaction.class))).thenReturn(true);
-		when(accountService.getUser(any(String.class))).thenReturn(account);
+		when(accountService.getAccountById(any(String.class))).thenReturn(account);
 
 		// Act
 		transactionService.handleDeposit(transaction);
@@ -191,7 +192,7 @@ public class TransactionServiceTest {
 		when(accountService.getAccount(destinationAccountId)).thenReturn(destinationAccount);
 		when(accountService.updateAccount(any(Account.class))).thenReturn(true);
 		when(transactionDAO.addTransaction(any(Transaction.class))).thenReturn(true);
-		when(accountService.getUser(sourceAccountId)).thenReturn(sourceAccount);
+		when(accountService.getAccountById(sourceAccountId)).thenReturn(sourceAccount);
 
 		// Act
 		transactionService.handleTransfer(transaction);

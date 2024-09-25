@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import com.wg.banking.config.AppConfig;
 import com.wg.banking.constants.NotificationConstants;
 import com.wg.banking.constants.StringConstants;
 import com.wg.banking.constants.TransactionConstants;
@@ -16,15 +17,7 @@ import com.wg.banking.controller.IssueController;
 import com.wg.banking.controller.NotificationController;
 import com.wg.banking.controller.TransactionController;
 import com.wg.banking.dao.AccountDetailsDAO;
-import com.wg.banking.dao.BranchDAO;
-import com.wg.banking.dao.IssueDAO;
-import com.wg.banking.dao.NotificationDAO;
 import com.wg.banking.dao.impl.AccountDetailsDAOImpl;
-import com.wg.banking.dao.impl.BranchDAOImpl;
-import com.wg.banking.dao.impl.IssueDAOImpl;
-import com.wg.banking.dao.impl.NotificationDAOImpl;
-import com.wg.banking.dao.impl.TransactionDAOImpl;
-import com.wg.banking.dao.TransactionDAO;
 import com.wg.banking.helper.GetUserInput;
 import com.wg.banking.helper.LoggingUtil;
 import com.wg.banking.helper.printer.AccountDetailsPrinter;
@@ -38,34 +31,22 @@ import com.wg.banking.model.NotificationDetails;
 import com.wg.banking.model.Transaction;
 import com.wg.banking.model.User;
 import com.wg.banking.service.AccountDetailsService;
-import com.wg.banking.service.BranchService;
-import com.wg.banking.service.IssueService;
-import com.wg.banking.service.NotificationService;
-import com.wg.banking.service.TransactionService;
 
 public class BranchManagerMenu {
 	
-	private static BranchDAO branchDAO = new BranchDAOImpl(); 
-	private static BranchService branchService = new BranchService(branchDAO);
-	private static BranchController branchController= new BranchController(branchService);
+	private static BranchController branchController= AppConfig.getBranchController();
 	
-	private static TransactionDAO transactionDAO = new TransactionDAOImpl(); 
-	private static TransactionService transactionService = new TransactionService(transactionDAO);
-	private static TransactionController transactionController= new TransactionController(transactionService);
+	private static TransactionController transactionController= AppConfig.getTransactionController();
 	 
-	private static NotificationDAO notificationDAO = new NotificationDAOImpl(); 
-	private static NotificationService notificationService = new NotificationService(notificationDAO);
-	private static NotificationController notificationController= new NotificationController(notificationService);
+	private static NotificationController notificationController= AppConfig.getNotificationController();
 	
-	private static IssueDAO issueDAO = new IssueDAOImpl(); 
-	private static IssueService issueService = new IssueService(issueDAO);
-	private static IssueController issueController = new IssueController(issueService);
+	private static IssueController issueController = AppConfig.getIssueController();
 	
 	private static AccountDetailsDAO accountDetailsDAO = new AccountDetailsDAOImpl();
 	private static AccountDetailsService accountDetailsService = new AccountDetailsService(accountDetailsDAO);
 	private static Logger logger = LoggingUtil.getLogger(Menu.class);
 	
-	private static Scanner scanner = new Scanner(System.in);
+	private static Scanner scanner = new Scanner(System.in); 
 	
 
 	public static void showBranchManagerMenu(User user) {
@@ -79,7 +60,7 @@ public class BranchManagerMenu {
 
             switch (choice) {
                 case 1:
-                	String branchName = branchService.getBranchByManagerId(user).getBranchName();
+                	String branchName = branchController.getBranchByManagerId(user).getBranchName();
                     displayAccountDetailsManager(user, branchName);
                     break;
                 case 2:
@@ -178,7 +159,7 @@ public class BranchManagerMenu {
 	
 	public static void displayManageIssuesForManager(User user) {
 		while(true) {
-			Branch branch = branchController.getBranch(user);
+			Branch branch = branchController.getBranchByManagerId(user);
 			System.out.println(StringConstants.MANAGE_ISSUE_SUB_MENU);
 			int choice = GetUserInput.getUserChoice();
 			
@@ -294,7 +275,7 @@ public class BranchManagerMenu {
 	public static void displayTransactionsSubMenuManager(User user) {
 		try {
 			while(true) {
-				Branch branch = branchController.getBranch(user);
+				Branch branch = branchController.getBranchByManagerId(user);
 				System.out.println(StringConstants.MANAGE_TRANSACTION_SUB_MENU);
 				int choice = GetUserInput.getUserChoice();
 				

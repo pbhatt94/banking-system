@@ -2,6 +2,7 @@ package com.wg.banking.presentation;
 
 import java.util.Scanner;
 
+import com.wg.banking.config.AppConfig;
 import com.wg.banking.constants.StringConstants;
 import com.wg.banking.controller.LoginController;
 
@@ -23,6 +24,8 @@ public class StartMenu {
 		System.out.println(StringConstants.ENTER_PASSWORD);
         String password = scanner.nextLine();
 
-        LoginController.authenticateUser(username,password);
+        LoginController loginController = AppConfig.getLoginController();
+        loginController.authenticateUser(username,password);
 	}
 }
+ 

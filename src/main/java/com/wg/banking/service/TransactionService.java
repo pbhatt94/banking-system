@@ -277,7 +277,7 @@ public class TransactionService {
 							+ "\t- Balance After Transaction: $%.2f\n\n"
 							+ "\tThank you for using our banking services.",
 					transaction.getAmount(), transaction.getTransactionId(), transaction.getCreatedAt(), newBalance);
-			String userId = accountService.getUser(transaction.getSourceAccountId()).getOwnerId();
+			String userId = accountService.getAccountById(transaction.getSourceAccountId()).getOwnerId();
 			System.out.println(userId);
 			notification.setReceiverId(userId);
 			notification.setMessage(WITHDRAWAL_NOTIFICATION_MESSAGE); 
@@ -288,7 +288,7 @@ public class TransactionService {
 					+ "\t- Balance After Transaction: $%.2f\n\n" + "\tThank you for using our banking services.",
 					transaction.getAmount(), transaction.getTransactionId(), transaction.getCreatedAt(), newBalance);
 
-			String user_id = accountService.getUser(transaction.getDestinationAccountId()).getOwnerId();
+			String user_id = accountService.getAccountById(transaction.getDestinationAccountId()).getOwnerId();
 			notification.setReceiverId(user_id);
 			notification.setMessage(depositMessage);
 			break;
@@ -300,7 +300,7 @@ public class TransactionService {
 							+ "\tThank you for using our banking services.",
 					transaction.getAmount(), transaction.getTransactionId(), transaction.getCreatedAt(),
 					transaction.getDestinationAccountId(), newBalance);
-			String user_Id = accountService.getUser(transaction.getSourceAccountId()).getOwnerId();
+			String user_Id = accountService.getAccountById(transaction.getSourceAccountId()).getOwnerId();
 			notification.setReceiverId(user_Id);
 			notification.setMessage(transferMessage);
 			break;

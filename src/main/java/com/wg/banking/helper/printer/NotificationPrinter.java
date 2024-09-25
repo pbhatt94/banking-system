@@ -1,6 +1,5 @@
 package com.wg.banking.helper.printer;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.wg.banking.model.Notification;
@@ -13,7 +12,6 @@ public class NotificationPrinter {
     private static final String BOX_BORDER = "===============================================================================================================================";
     private static final String DIVIDER_LINE = "-----------------------------------------------------------------------------------------------------------------------------";
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static void printNotifications(List<Notification> notifications) {
     	if(notifications == null || notifications.size() == 0) {
