@@ -152,3 +152,31 @@ Sept 23, 2024 5:32:33 PM com.wg.banking.controller.LoginController authenticateU
 SEVERE: User Authentication Failed!! 
  Username: admin -- '
 Invalid Credentials!
+Sept 25, 2024 3:32:32 PM com.wg.banking.controller.LoginController authenticateUser
+INFO: User Authenticated Successfully !
+Username: admin
+
+Oct 01, 2024 3:04:45 PM com.wg.banking.service.AccountService getAccount
+SEVERE: Database error
+Oct 01, 2024 3:04:45 PM com.wg.banking.service.AccountService getAllAccounts
+SEVERE: Database error
+Oct 01, 2024 3:04:45 PM com.wg.banking.service.AccountService getAccount
+SEVERE: Database error
+Oct 01, 2024 3:04:46 PM com.wg.banking.service.AccountDetailsService getAllAccountDetails
+SEVERE: null
+Oct 01, 2024 3:04:46 PM com.wg.banking.service.AccountDetailsService getAllAccountDetails
+SEVERE: null
+Oct 01, 2024 3:04:47 PM com.wg.banking.service.ClosedAccountsService getAllClosedAccounts
+SEVERE: null
+Oct 01, 2024 3:04:47 PM com.wg.banking.service.ClosedAccountsService addClosedAccounts
+SEVERE: null
+Oct 01, 2024 3:04:47 PM com.wg.banking.service.ClosedAccountsService getClosedAccount
+SEVERE: null
+Oct 01, 2024 3:04:47 PM com.wg.banking.service.IssueService getAllIssues
+SEVERE: null
+Oct 01, 2024 3:04:47 PM com.wg.banking.service.IssueService getAllIssues
+SEVERE: null
+Oct 01, 2024 3:04:47 PM com.wg.banking.service.IssueService getIssueById
+SEVERE: null
+Oct 01, 2024 3:04:48 PM com.wg.banking.service.UserService getUserById
+SEVERE: Database error

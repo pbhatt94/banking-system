@@ -1,6 +1,6 @@
 package com.wg.banking.constants;
 
-public final class AccountConstants {
+public final class AccountConstants { 
     
     public static final String ACCOUNT_TABLE_NAME = "Account";
     public static final String ACCOUNT_NO_COLUMN = "account_no";
